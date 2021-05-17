@@ -1,0 +1,14 @@
+{
+  "statusList": [
+    "create",
+    "complete",
+    "assigned",
+    "rejected"
+  ],
+  "workList": [
+    "ethernet",
+    "tv",
+    "Store",
+    "mobile"
+  ]
+}

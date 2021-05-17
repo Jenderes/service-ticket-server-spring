@@ -45,7 +45,7 @@ public class AuthenticationController {
             final List<String> roles = user.getAuthorities().stream().map(
                     GrantedAuthority::getAuthority
             ).collect(Collectors.toList());
-            String token = jwtProvider.createToken(user.getUsername(), roles);
+            String token = jwtProvider.createToken(user.getId(), user.getUsername(), roles);
             return ResponseEntity.ok(new AuthUserDto(
                     token, user.getId(), user.getEmail(), user.getUsername(), user.getFirstname(),
                     user.getLastname(), roles

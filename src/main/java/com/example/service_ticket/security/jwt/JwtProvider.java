@@ -42,7 +42,7 @@ public class JwtProvider {
     }
 
     // Создание токаена по имени пользователя и роли
-    public String createToken(String username, List<String> role) {
+    public String createToken(long id, String username, List<String> role) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", role);
 
@@ -51,6 +51,7 @@ public class JwtProvider {
 
         return Jwts.builder()
                 .setClaims(claims)
+                .setId(String.valueOf(id))
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secret)
@@ -67,7 +68,9 @@ public class JwtProvider {
     public String getUserName(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
-
+    public String getUserId(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getId();
+    }
     // Получение токена из запроса на сервер
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

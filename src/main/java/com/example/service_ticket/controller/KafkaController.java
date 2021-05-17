@@ -2,6 +2,7 @@ package com.example.service_ticket.controller;
 
 import com.example.service_ticket.config.KafkaTopicConfig;
 import com.example.service_ticket.model.RequestMessageDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.slf4j.Logger;
@@ -23,9 +24,8 @@ import java.util.stream.StreamSupport;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("api/kafka/")
+@Slf4j
 public class KafkaController {
-    private static final Logger logger =
-            LoggerFactory.getLogger(KafkaTopicConfig.class);
 
     private final KafkaTemplate<String, Object> template;
     private final String topicName;
@@ -50,7 +50,7 @@ public class KafkaController {
                         new RequestMessageDto(i, "request message"))
                 );
         latch.await(60, TimeUnit.SECONDS);
-        logger.info("All messages received");
+        log.info("All messages received");
         return "Hello Kafka!";
     }
 
@@ -59,7 +59,7 @@ public class KafkaController {
             groupId = "2")
     public void listenAsObject(ConsumerRecord<String, RequestMessageDto> cr,
                                @Payload RequestMessageDto payload) {
-        logger.info("Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(),
+        log.info("Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(),
                 typeIdHeader(cr.headers()), payload, cr.toString());
         latch.countDown();
     }
@@ -69,7 +69,7 @@ public class KafkaController {
             groupId = "2")
     public void listenAsString(ConsumerRecord<String, String> cr,
                                @Payload String payload) {
-        logger.info("Logger 2 [String] received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(),
+        log.info("Logger 2 [String] received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(),
                 typeIdHeader(cr.headers()), payload, cr.toString());
         latch.countDown();
     }

@@ -1,13 +1,34 @@
 package com.example.service_ticket.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.service_ticket.model.MessageDto;
+import com.example.service_ticket.model.RequestDto;
+import com.example.service_ticket.security.jwt.JwtProvider;
+import com.example.service_ticket.service.RequestService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/user/")
 public class UserController {
+
+    private final JwtProvider jwtProvider;
+    private final RequestService requestService;
+
+    public UserController(JwtProvider jwtProvider, RequestService requestService) {
+        this.jwtProvider = jwtProvider;
+        this.requestService = requestService;
+    }
+
+    @PostMapping("send")
+    public ResponseEntity<?> sendTicket(HttpServletRequest request,
+                                        @RequestBody RequestDto requestDto) {
+        String resolveToken = jwtProvider.resolveToken(request);
+        String id = jwtProvider.getUserId(resolveToken);
+        requestService.createRequest(requestDto, Long.parseLong(id));
+        return ResponseEntity.ok(new MessageDto("saved request"));
+    }
 
 }
