@@ -22,6 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String AUTH_ENDPOINT = "/api/authentication/*";
     private static final String USER_ENDPOINT = "/api/user/*";
     private static final String MANAGER_ENDPOINT = "/api/manager/*";
+    private static final String KAFKA_ENDPOINT = "/api/kafka/*";
 
     public WebSecurityConfig(JwtProvider jwtProvider, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.jwtProvider = jwtProvider;
@@ -43,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT).permitAll()
+                .antMatchers(KAFKA_ENDPOINT).permitAll()
                 .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(MANAGER_ENDPOINT).hasRole("MANAGER")
                 .anyRequest().authenticated();

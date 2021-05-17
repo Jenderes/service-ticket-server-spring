@@ -1,18 +1,9 @@
 package com.example.service_ticket.model;
 
+import lombok.Value;
+
+@Value
 public class MessageDto {
 
-    private String Message;
-
-    public MessageDto(String message) {
-        Message = message;
-    }
-
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setMessage(String message) {
-        Message = message;
-    }
+    String Message;
 }

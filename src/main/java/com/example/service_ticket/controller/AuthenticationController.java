@@ -37,7 +37,6 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-
     @PostMapping("login")
     public ResponseEntity<?> login(@RequestBody AuthenticationDto requestDto) {
         try {
@@ -55,6 +54,7 @@ public class AuthenticationController {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
+
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody UserDto userDto) {
         try {
