@@ -1,0 +1,6 @@
+[
+  {"name": "Интернет", "value": "ethernet"},
+  {"name": "Телевиденье", "value": "tv"},
+  {"name": "Заказы", "value": "Store"},
+  {"name": "Моб.связь", "value": "mobile"}
+]

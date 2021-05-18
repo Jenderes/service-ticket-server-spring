@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,22 +75,24 @@ public class RequestService {
                 .execute();
     }
 
-    public List<String> getStatusList(){
+    public List<WorkStatus> getStatusList(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            WorkStatus workStatus = objectMapper.readValue(new File("src/main/resources/json/status-work.json"), WorkStatus.class);
-            return workStatus.getStatusList();
+            return Arrays.asList(
+                    objectMapper.readValue(new File("src/main/resources/json/status.json"), WorkStatus[].class
+                    ));
         } catch (IOException e) {
             log.info(e.getMessage());
             return null;
         }
     }
 
-    public List<String> getWorkList(){
+    public List<WorkStatus> getWorkList(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            WorkStatus workStatus = objectMapper.readValue(new File("src/main/resources/json/status-work.json"), WorkStatus.class);
-            return workStatus.getWorkList();
+            return Arrays.asList(
+                    objectMapper.readValue(new File("src/main/resources/json/work.json"), WorkStatus[].class
+                    ));
         } catch (IOException e) {
             log.info(e.getMessage());
             return null;
@@ -115,4 +118,12 @@ public class RequestService {
                 .collect(Collectors.toList());
     }
 
+    public List<RequestDto> findUserRequestByUserId(long id){
+        Result<RequestRecord> requestRecords = dsl.selectFrom(Tables.REQUEST)
+                .where(Tables.REQUEST.SENDER_USER_ID.eq(id))
+                .fetch();
+        return requestRecords.stream()
+                .map(RequestDto::convertDto)
+                .collect(Collectors.toList());
+    }
 }

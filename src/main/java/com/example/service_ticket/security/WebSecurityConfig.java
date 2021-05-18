@@ -20,7 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     private static final String AUTH_ENDPOINT = "/api/authentication/*";
-    private static final String USER_ENDPOINT = "/api/user/*";
     private static final String REQUEST_ENDPOINT = "/api/request/*";
     private static final String MANAGER_ENDPOINT = "/api/manager/*";
     private static final String KAFKA_ENDPOINT = "/api/kafka/*";
@@ -60,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(KAFKA_ENDPOINT).permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(REQUEST_ENDPOINT).hasRole("USER")
                 .antMatchers(MANAGER_ENDPOINT).hasRole("MANAGER")
                 .anyRequest().permitAll();
