@@ -1,6 +1,7 @@
 package com.example.service_ticket.service;
 
 import com.example.service_ticket.model.RequestDto;
+import com.example.service_ticket.model.UserDto;
 import com.example.service_ticket.model.WorkStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.model.Public;
@@ -11,11 +12,13 @@ import com.sample.model.tables.records.RequestRecord;
 import com.sample.model.tables.records.UserRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
+import org.jooq.Result;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -92,4 +95,24 @@ public class RequestService {
             return null;
         }
     }
+
+    public List<RequestDto> findRequestsByManagerId(long managerId){
+        Result<RequestRecord> requestRecords = dsl.selectFrom(Tables.REQUEST)
+                .where(Tables.REQUEST.ASIGNEE_ID.eq(managerId))
+                .fetch();
+        return requestRecords.stream()
+                .map(RequestDto::convertDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<RequestDto> findRequestsByWorkAndWithoutManager(String work){
+        Result<RequestRecord> requestRecords = dsl.selectFrom(Tables.REQUEST)
+                .where(Tables.REQUEST.ASIGNEE_ID.isNull())
+                .and(Tables.REQUEST.WORK.eq(work))
+                .fetch();
+        return requestRecords.stream()
+                .map(RequestDto::convertDto)
+                .collect(Collectors.toList());
+    }
+
 }

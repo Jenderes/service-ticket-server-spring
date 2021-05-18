@@ -22,7 +22,7 @@ public class UserController {
         this.requestService = requestService;
     }
 
-    @PostMapping("send")
+    @PostMapping("create")
     public ResponseEntity<?> sendTicket(HttpServletRequest request,
                                         @RequestBody RequestDto requestDto) {
         String resolveToken = jwtProvider.resolveToken(request);
