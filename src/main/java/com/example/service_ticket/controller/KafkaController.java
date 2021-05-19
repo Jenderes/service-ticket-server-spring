@@ -1,12 +1,9 @@
 package com.example.service_ticket.controller;
 
-import com.example.service_ticket.config.KafkaTopicConfig;
 import com.example.service_ticket.model.RequestMessageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;

@@ -24,7 +24,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String REQUEST_ENDPOINT = "/api/request/*";
     private static final String MANAGER_ENDPOINT = "/api/manager/*";
     private static final String KAFKA_ENDPOINT = "/api/kafka/*";
-
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
     public WebSecurityConfig(JwtProvider jwtProvider, JwtAuthEntryPoint jwtAuthEntryPoint) {
         this.jwtProvider = jwtProvider;
         this.jwtAuthEntryPoint = jwtAuthEntryPoint;
@@ -46,10 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT).permitAll()
                 .antMatchers(KAFKA_ENDPOINT).permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers(USER_ENDPOINT).hasRole("USER")
                 .antMatchers(REQUEST_ENDPOINT).hasRole("USER")
                 .antMatchers(MANAGER_ENDPOINT).hasRole("MANAGER")
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
         httpSecurity.apply(new JwtConfigurer(jwtProvider));
     }
