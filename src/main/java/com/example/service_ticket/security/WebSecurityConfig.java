@@ -58,7 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_ENDPOINT).permitAll()
                 .antMatchers(KAFKA_ENDPOINT).permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers(REQUEST_ENDPOINT).hasRole("USER")
                 .antMatchers(MANAGER_ENDPOINT).hasRole("MANAGER")
                 .anyRequest().permitAll();

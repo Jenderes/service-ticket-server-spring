@@ -1,6 +1,22 @@
 [
-  {"name": "Интернет", "value": "ethernet"},
-  {"name": "Телевиденье", "value": "tv"},
-  {"name": "Заказы", "value": "Store"},
-  {"name": "Моб.связь", "value": "mobile"}
+  {
+    "displayName": "Выполнено",
+    "name": "OPEN"
+  },
+  {
+    "displayName": "Обрабатывается",
+    "name": "CREATE"
+  },
+  {
+    "displayName": "Выполняется",
+    "name": "ASSIGNED"
+  },
+  {
+    "displayName": "Откланено",
+    "name": "REJECTED"
+  },
+  {
+    "displayName": "Выполнено",
+    "name": "COMPLETE"
+  }
 ]

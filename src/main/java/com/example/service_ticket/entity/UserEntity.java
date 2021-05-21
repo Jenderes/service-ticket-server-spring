@@ -1,22 +1,22 @@
-package com.example.service_ticket.model;
+package com.example.service_ticket.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class AuthUserDto {
-    private String token;
-    private long userId;
-    private String email;
+public class UserEntity {
+    private Long userId;
     private String username;
+    private String password;
+    private String email;
     private String firstName;
     private String lastName;
-    private List<String> roles;
+    private String phoneNumber;
+    private String category;
+    private String status;
 }

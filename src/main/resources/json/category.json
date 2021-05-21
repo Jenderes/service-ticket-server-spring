@@ -1,0 +1,27 @@
+[
+  {
+    "displayName": "Интернет",
+    "name": "ETHERNET",
+    "initialStatus": "CREATE"
+  },
+  {
+    "displayName": "Дефекты",
+    "name": "DEFECT",
+    "initialStatus": "CREATE"
+  },
+  {
+    "displayName": "Магазтин",
+    "name": "STORE",
+    "initialStatus": "OPEN"
+  },
+  {
+  "displayName": "Телевиденье",
+  "name": "TV",
+  "initialStatus": "CREATE"
+  },
+  {
+    "displayName": "Мобильная связь",
+    "name": "MOBILE",
+    "initialStatus": "CREATE"
+  }
+]

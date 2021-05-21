@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+    - "2181:2181"
+  kafka:
+    image:
+      wurstmeister/kafka
+    ports:
+    - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  postgresdb:
+    image: postgres
+    hostname: postgres
+    ports:
+      - "6342:5432"
+    networks:
+      - app-tier
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - postgresdb
+    ports:
+      - "5555:80"
+    networks:
+      - app-tier
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
+networks:
+  app-tier:
+    driver: bridge
+volumes:
+  postgres-data:

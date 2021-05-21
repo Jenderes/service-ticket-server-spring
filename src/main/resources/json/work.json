@@ -1,6 +1,0 @@
-[
-  {"name": "Выполнено", "value": "complete"},
-  {"name": "Обрабатывается", "value": "create"},
-  {"name": "Выполняется", "value": "assigned"},
-  {"name": "Откланено", "value": "rejected"}
-]

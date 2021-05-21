@@ -1,11 +1,10 @@
 package com.example.service_ticket.controller;
 
+import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.model.MessageDto;
-import com.example.service_ticket.model.RequestDto;
-import com.example.service_ticket.security.jwt.JwtProvider;
-import com.example.service_ticket.service.RequestService;
-import com.example.service_ticket.service.UserService;
-import com.sample.model.tables.pojos.User;
+import com.example.service_ticket.model.TicketDto;
+import com.example.service_ticket.service.impl.TicketServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,41 +14,27 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/manager/")
+@RequiredArgsConstructor
 public class ManagerController {
 
-    private final RequestService requestService;
-    private final UserService userService;
-    private final JwtProvider jwtProvider;
+    private final TicketServiceImpl ticketServiceImpl;
 
-    public ManagerController(RequestService requestService, UserService userService, JwtProvider jwtProvider) {
-        this.requestService = requestService;
-        this.userService = userService;
-        this.jwtProvider = jwtProvider;
-    }
-
-    @RequestMapping(value = "change/{id}/{status}", method = RequestMethod.PUT)
-    public ResponseEntity<?> changeStatus(@PathVariable String status, @PathVariable long id){
-        if (requestService.existsRequestById(id)){
-            requestService.changeStatusRequest(id, status);
-            return ResponseEntity.ok(new MessageDto("Статус изменен"));
+    @RequestMapping(value = "ticket/update", method = RequestMethod.PUT)
+    public ResponseEntity<?> changeStatus(@RequestBody TicketDto ticketDto){
+        if (ticketServiceImpl.existsTicketById(ticketDto.getTicketId())){
+            ticketServiceImpl.updateTicket(TicketDto.convertToEntity(ticketDto));
+            return ResponseEntity.ok(new MessageDto("данные изменены"));
         } else {
-            return ResponseEntity.badRequest().body(new MessageDto("Нет request с id: " + id));
+            return ResponseEntity.badRequest().body(new MessageDto("Нет тикета с id: " + ticketDto.getTicketId()));
         }
     }
 
-    @RequestMapping(value = "get/request/work", method = RequestMethod.GET)
-    public List<RequestDto> getEmptyTicket(HttpServletRequest request){
-        String resolveToken = jwtProvider.resolveToken(request);
-        String username = jwtProvider.getUserName(resolveToken);
-        User user = userService.findUserByUserName(username);
-        return requestService.findRequestsByWorkAndWithoutManager(user.getWork());
+    @RequestMapping(value = "get/ticket/category", method = RequestMethod.GET)
+    public List<TicketEntity> getEmptyTicket(HttpServletRequest request){
+        return ticketServiceImpl.getTicketWithoutAssignee();
     }
-
-    @RequestMapping(value = "get/request", method = RequestMethod.GET)
-    public List<RequestDto> getManagerRequest(HttpServletRequest request){
-        String resolveToken = jwtProvider.resolveToken(request);
-        String id = jwtProvider.getUserId(resolveToken);
-        return requestService.findRequestsByManagerId(Long.parseLong(id));
+    @RequestMapping(value = "get/ticket/assignee", method = RequestMethod.GET)
+    public List<TicketEntity> getManagerRequest(HttpServletRequest request){
+        return ticketServiceImpl.getTicketByAssignee();
     }
-
 }
