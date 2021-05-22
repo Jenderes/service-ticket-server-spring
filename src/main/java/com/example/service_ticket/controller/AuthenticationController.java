@@ -6,8 +6,7 @@ import com.example.service_ticket.model.MessageDto;
 import com.example.service_ticket.model.UserDto;
 import com.example.service_ticket.security.jwt.JwtProvider;
 import com.example.service_ticket.security.jwt.JwtUser;
-import com.example.service_ticket.service.UserService;
-import com.sample.model.tables.pojos.User;
+import com.example.service_ticket.service.impl.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -29,12 +28,12 @@ public class AuthenticationController {
 
     private final JwtProvider jwtProvider;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserService userService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserServiceImpl userServiceImpl) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @PostMapping("login")
@@ -51,20 +50,21 @@ public class AuthenticationController {
                     user.getLastname(), roles
             ));
         } catch (AuthenticationServiceException exp) {
+
             throw new BadCredentialsException("Invalid username or password");
         }
     }
 
     @PostMapping("register")
-    public ResponseEntity<?> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> register(@RequestBody UserDto createUserDto) {
         try {
             ResponseEntity<?> responseEntity;
-            if (userService.existsByUsername(userDto.getLogin())){
+            if (userServiceImpl.existsUserByUsername(createUserDto.getUsername())){
                 responseEntity = ResponseEntity.badRequest().body(new MessageDto("Пользователь с таким именен уже зарегистрирован"));
-            } else if (userService.existsByEmail(userDto.getEmail())){
+            } else if (userServiceImpl.existsUserByEmail(createUserDto.getEmail())){
                 responseEntity = ResponseEntity.badRequest().body(new MessageDto("Пользователь с таким email уже зарегистрирован"));
             } else {
-                userService.createUser(userDto);
+                userServiceImpl.creatUser(UserDto.convertToEntity(createUserDto));
                 responseEntity = ResponseEntity.ok(new MessageDto("Пользователь зарегистрирован"));
             }
             return responseEntity;

@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkStatus {
-    private List<String> workList;
-    private List<String> statusList;
+    String name;
+    String value;
 }

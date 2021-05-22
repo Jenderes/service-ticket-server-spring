@@ -1,0 +1,120 @@
+[
+  {
+    "displayName": "Интернет",
+    "name": "ETHERNET",
+    "statusTransitionDictionaryEntityList": [
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "ASSIGNED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "COMPLETE"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "REJECTED"
+      }
+    ]
+  },
+  {
+    "displayName": "Дефекты",
+    "name": "DEFECT",
+    "statusTransitionDictionaryEntityList": [
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "ASSIGNED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "COMPLETE"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "REJECTED"
+      }
+    ]
+  },
+  {
+    "displayName": "Магазтин",
+    "name": "STORE",
+    "statusTransitionDictionaryEntityList": [
+      {
+        "fromStatus": "OPEN",
+        "toStatus": "CREATE"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "ASSIGNED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "COMPLETE"
+      },
+      {
+        "fromStatus": "OPEN",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "REJECTED"
+      }
+    ]
+  },
+  {
+    "displayName": "Телевиденье",
+    "name": "TV",
+    "statusTransitionDictionaryEntityList": [
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "ASSIGNED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "COMPLETE"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "REJECTED"
+      }
+    ]
+  },
+  {
+    "displayName": "Мобильная связь",
+    "name": "MOBILE",
+    "statusTransitionDictionaryEntityList": [
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "ASSIGNED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "REJECTED"
+      },
+      {
+        "fromStatus": "ASSIGNED",
+        "toStatus": "COMPLETE"
+      },
+      {
+        "fromStatus": "CREATE",
+        "toStatus": "REJECTED"
+      }
+    ]
+  }
+]

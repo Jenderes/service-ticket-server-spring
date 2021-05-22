@@ -1,0 +1,22 @@
+[
+  {
+    "displayName": "Выполнено",
+    "name": "OPEN"
+  },
+  {
+    "displayName": "Обрабатывается",
+    "name": "CREATE"
+  },
+  {
+    "displayName": "Выполняется",
+    "name": "ASSIGNED"
+  },
+  {
+    "displayName": "Откланено",
+    "name": "REJECTED"
+  },
+  {
+    "displayName": "Выполнено",
+    "name": "COMPLETE"
+  }
+]

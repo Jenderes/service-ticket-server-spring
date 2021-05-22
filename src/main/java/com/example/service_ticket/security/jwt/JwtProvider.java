@@ -1,6 +1,6 @@
 package com.example.service_ticket.security.jwt;
 
-import com.sample.model.tables.pojos.Role;
+import com.example.service_ticket.entity.RoleEntity;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,7 +91,7 @@ public class JwtProvider {
     }
 
     // получение списка ролей
-    public List<String> getRolesName(List<Role> userRoles) {
+    public List<String> getRolesName(List<RoleEntity> userRoles) {
         List<String> result = new ArrayList<>();
         userRoles.forEach(role -> result.add(role.getRoleName()));
         return result;
