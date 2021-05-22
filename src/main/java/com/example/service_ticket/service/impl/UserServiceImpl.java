@@ -4,16 +4,14 @@ import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
-import com.example.service_ticket.service.AutoFillService;
+import com.example.service_ticket.service.UpdateAutoFillService;
 import com.example.service_ticket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +22,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final AutoFillService autoFillService;
+    private final UpdateAutoFillService updateAutoFillService;
 
     @Override
     public void updateUser(UserEntity userEntity) {
-        autoFillService.fillOnUpdate(userEntity);
+        userEntity = updateAutoFillService.fillOnUpdate(userEntity);
         userRepository.update(userEntity);
     }
 

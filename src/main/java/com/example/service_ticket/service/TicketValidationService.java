@@ -1,9 +1,10 @@
 package com.example.service_ticket.service;
 
+import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.model.TicketDto;
 
 public interface TicketValidationService {
-    void validateOnCreate(TicketDto ticketDto);
+    void validateOnCreate(TicketEntity toCreateTicket);
 
-    void validateOnUpdate(TicketDto ticketDto);
+    void validateOnUpdate(TicketEntity toUpdateTicket);
 }

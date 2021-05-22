@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface DictionaryService<E extends DictionaryEntity> {
     List<E> getAllValues(Class<E> clazz);
 
-    Optional<E> getValueByName(String name, Class<E> clazz);
+    Optional<E> getValueByName(Class<E> clazz, String name);
 }

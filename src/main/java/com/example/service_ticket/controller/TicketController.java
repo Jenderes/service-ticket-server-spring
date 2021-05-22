@@ -31,6 +31,16 @@ public class TicketController {
         return ResponseEntity.ok(new MessageDto("saved request"));
     }
 
+    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    public ResponseEntity<?> changeStatus(@RequestBody TicketDto ticketDto){
+        if (ticketServiceImpl.existsTicketById(ticketDto.getTicketId())){
+            ticketServiceImpl.updateTicket(TicketDto.convertToEntity(ticketDto));
+            return ResponseEntity.ok(new MessageDto("данные изменены"));
+        } else {
+            return ResponseEntity.badRequest().body(new MessageDto("Нет тикета с id: " + ticketDto.getTicketId()));
+        }
+    }
+
     @RequestMapping(value = "get", method = RequestMethod.GET)
     public List<SendTicketDto> getUserRequest(HttpServletRequest request) {
         return ticketServiceImpl.getTicketUser()

@@ -3,9 +3,7 @@ package com.example.service_ticket.service.impl;
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.service.AutoFillService;
-import com.example.service_ticket.service.TicketService;
-import com.example.service_ticket.service.UserService;
+import com.example.service_ticket.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,18 +16,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private final AutoFillService autoFillService;
+    private final UpdateAutoFillService updateAutoFillService;
     private final TicketRepository ticketRepository;
+    private final TicketValidationService ticketValidationService;
+    private final TicketAutoFillService ticketAutoFillService;
     private final UserService userService;
 
     @Override
     public void updateTicket(TicketEntity ticketEntity) {
-        ticketEntity = autoFillService.fillOnUpdate(ticketEntity);
+        UserEntity userEntity = userService.getCurrentUser();
+        ticketEntity.setCategory(ticketRepository.findById(ticketEntity.getTicketId()).getCategory());
+        ticketValidationService.validateOnUpdate(ticketEntity);
+        ticketEntity.setUpdateById(userEntity.getUserId());
+        ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity);
         ticketRepository.update(ticketEntity);
     }
 
     @Override
     public void creatTicket(TicketEntity ticketEntity) {
+        UserEntity userEntity = userService.getCurrentUser();
+        ticketEntity.setCreateById(userEntity.getUserId());
+        ticketEntity.setUpdateById(userEntity.getUserId());
+        ticketEntity.setUserFullName(userEntity.getLastName() + " " + userEntity.getFirstName());
+        ticketEntity = ticketAutoFillService.fillOnCreate(ticketEntity);
         ticketRepository.save(ticketEntity);
     }
 

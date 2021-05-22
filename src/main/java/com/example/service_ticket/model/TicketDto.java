@@ -3,6 +3,8 @@ package com.example.service_ticket.model;
 import com.example.service_ticket.entity.TicketEntity;
 import lombok.Value;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Value
@@ -15,8 +17,8 @@ public class TicketDto {
     String description;
     String status;
     String category;
-    Date createDate;
-    Date updateDate;
+    LocalDate createDate;
+    LocalDate updateDate;
     String userFullName;
 
     public static TicketEntity convertToEntity(TicketDto ticketDto){
@@ -29,8 +31,8 @@ public class TicketDto {
                 ticketDto.description,
                 ticketDto.status,
                 ticketDto.category,
-                ticketDto.createDate,
                 ticketDto.updateDate,
+                ticketDto.createDate,
                 ticketDto.userFullName
         );
     }

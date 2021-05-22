@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -12,15 +13,15 @@ import java.util.Date;
 @Getter
 @Setter
 public class TicketEntity {
-    private Long   ticketId;
-    private Long   creatBy;
-    private Long   userAssignee;
-    private Long   updateBy;
+    private Long ticketId;
+    private Long createById;
+    private Long userAssigneeId;
+    private Long updateById;
     private String name;
     private String description;
     private String status;
     private String category;
-    private Date updateDate;
-    private Date createDate;
+    private LocalDate updateDate;
+    private LocalDate createDate;
     private String userFullName;
 }

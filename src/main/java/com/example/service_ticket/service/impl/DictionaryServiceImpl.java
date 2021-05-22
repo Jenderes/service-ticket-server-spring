@@ -31,7 +31,7 @@ public class DictionaryServiceImpl<T extends DictionaryEntity> implements Dictio
     }
 
     @Override
-    public Optional<T> getValueByName(String name, Class<T> clazz) {
+    public Optional<T> getValueByName(Class<T> clazz, String name) {
         List<T> listValues = getAllValues(clazz);
         for (T element: listValues){
             if (element.getName().equals(name))
