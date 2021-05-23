@@ -1,9 +1,13 @@
-package com.example.service_ticket.service.impl;
+package com.example.service_ticket.service.impl.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.repository.TicketRepository;
 import com.example.service_ticket.service.*;
+import com.example.service_ticket.service.ticket.TicketAutoFillService;
+import com.example.service_ticket.service.ticket.TicketService;
+import com.example.service_ticket.service.ticket.TicketValidationService;
+import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +30,10 @@ public class TicketServiceImpl implements TicketService {
     public void updateTicket(TicketEntity ticketEntity) {
         UserEntity userEntity = userService.getCurrentUser();
         ticketEntity.setCategory(ticketRepository.findById(ticketEntity.getTicketId()).getCategory());
-        ticketValidationService.validateOnUpdate(ticketEntity);
+        TicketEntity oldTicket = ticketRepository.findById(ticketEntity.getTicketId());
+        ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
-        ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity);
+        ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
         ticketRepository.update(ticketEntity);
     }
 

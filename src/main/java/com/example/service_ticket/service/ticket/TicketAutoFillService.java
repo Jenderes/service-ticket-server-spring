@@ -1,4 +1,4 @@
-package com.example.service_ticket.service;
+package com.example.service_ticket.service.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
 

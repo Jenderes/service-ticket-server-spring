@@ -1,120 +1,156 @@
 [
   {
-    "displayName": "Интернет",
-    "name": "ETHERNET",
-    "statusTransitionDictionaryEntityList": [
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "ASSIGNED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "COMPLETE"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "REJECTED"
-      }
-    ]
+    "displayName": "1",
+    "name": "2",
+    "category": "ETHERNET",
+    "fromStatus": "CREATE",
+    "toStatus": "ASSIGNED"
   },
   {
-    "displayName": "Дефекты",
-    "name": "DEFECT",
-    "statusTransitionDictionaryEntityList": [
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "ASSIGNED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "COMPLETE"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "REJECTED"
-      }
-    ]
+    "displayName": "2",
+    "name": "3",
+    "category": "ETHERNET",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "REJECTED"
   },
   {
-    "displayName": "Магазтин",
-    "name": "STORE",
-    "statusTransitionDictionaryEntityList": [
-      {
-        "fromStatus": "OPEN",
-        "toStatus": "CREATE"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "ASSIGNED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "COMPLETE"
-      },
-      {
-        "fromStatus": "OPEN",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "REJECTED"
-      }
-    ]
+    "displayName": "3",
+    "name": "4",
+    "category": "ETHERNET",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "COMPLETE"
   },
   {
-    "displayName": "Телевиденье",
-    "name": "TV",
-    "statusTransitionDictionaryEntityList": [
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "ASSIGNED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "COMPLETE"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "REJECTED"
-      }
-    ]
+    "displayName": "5",
+    "name": "6",
+    "category": "ETHERNET",
+    "fromStatus": "CREATE",
+    "toStatus": "REJECTED"
   },
   {
-    "displayName": "Мобильная связь",
-    "name": "MOBILE",
-    "statusTransitionDictionaryEntityList": [
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "ASSIGNED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "REJECTED"
-      },
-      {
-        "fromStatus": "ASSIGNED",
-        "toStatus": "COMPLETE"
-      },
-      {
-        "fromStatus": "CREATE",
-        "toStatus": "REJECTED"
-      }
-    ]
+    "displayName": "2",
+    "name": "3",
+    "category": "DEFECT",
+    "fromStatus": "CREATE",
+    "toStatus": "ASSIGNED"
+  },
+  {
+    "displayName": "3",
+    "name": "4",
+    "category": "DEFECT",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "4",
+    "name": "5",
+    "category": "DEFECT",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "COMPLETE"
+  },
+  {
+    "displayName": "6",
+    "name": "6",
+    "category": "DEFECT",
+    "fromStatus": "CREATE",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "STORE",
+    "fromStatus": "OPEN",
+    "toStatus": "CREATE"
+  },
+  {
+    "displayName": "3",
+    "name": "4",
+    "category": "STORE",
+    "fromStatus": "CREATE",
+    "toStatus": "ASSIGNED"
+  },
+  {
+    "displayName": "5",
+    "name": "6",
+    "category": "STORE",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "6",
+    "name": "7",
+    "category": "STORE",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "COMPLETE"
+  },
+  {
+    "displayName": "7",
+    "name": "8",
+    "category": "STORE",
+    "fromStatus": "OPEN",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "8",
+    "name": "9",
+    "category": "STORE",
+    "fromStatus": "CREATE",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "TV",
+    "fromStatus": "CREATE",
+    "toStatus": "ASSIGNED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "TV",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "TV",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "COMPLETE"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "TV",
+    "fromStatus": "CREATE",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "MOBILE",
+    "fromStatus": "CREATE",
+    "toStatus": "ASSIGNED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "MOBILE",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "MOBILE",
+    "fromStatus": "ASSIGNED",
+    "toStatus": "COMPLETE"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "MOBILE",
+    "fromStatus": "CREATE",
+    "toStatus": "REJECTED"
   }
 ]

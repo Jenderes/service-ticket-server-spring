@@ -1,6 +1,6 @@
 package com.example.service_ticket.exception;
 
-public class StatusTransitionException extends Exception{
+public class StatusTransitionException extends RuntimeException{
 
     public StatusTransitionException() {
     }

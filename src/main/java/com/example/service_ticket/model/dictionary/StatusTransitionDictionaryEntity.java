@@ -6,7 +6,9 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class StatusTransitionDictionaryEntity {
+public class StatusTransitionDictionaryEntity extends DictionaryEntity{
+
+    String category;
     String fromStatus;
     String toStatus;
 }

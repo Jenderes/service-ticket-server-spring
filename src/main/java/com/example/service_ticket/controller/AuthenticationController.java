@@ -6,7 +6,7 @@ import com.example.service_ticket.model.MessageDto;
 import com.example.service_ticket.model.UserDto;
 import com.example.service_ticket.security.jwt.JwtProvider;
 import com.example.service_ticket.security.jwt.JwtUser;
-import com.example.service_ticket.service.impl.UserServiceImpl;
+import com.example.service_ticket.service.impl.user.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;

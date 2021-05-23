@@ -1,4 +1,4 @@
-package com.example.service_ticket.service;
+package com.example.service_ticket.service.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.model.TicketDto;
@@ -6,5 +6,5 @@ import com.example.service_ticket.model.TicketDto;
 public interface TicketValidationService {
     void validateOnCreate(TicketEntity toCreateTicket);
 
-    void validateOnUpdate(TicketEntity toUpdateTicket);
+    void validateOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket);
 }

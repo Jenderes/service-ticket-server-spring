@@ -16,40 +16,29 @@ import java.lang.reflect.Field;
 @RequiredArgsConstructor
 public class UpdateAutoFillServiceImpl implements UpdateAutoFillService {
 
-    private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
-
-
     @Override
-    public TicketEntity fillOnUpdate(TicketEntity toUpdateTicket) {
-        TicketEntity oldTicket = ticketRepository.findById(toUpdateTicket.getTicketId());
+    public TicketEntity fillOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket) {
         Field[] ticketField = TicketEntity.class.getDeclaredFields();
-        for (Field field: ticketField){
-            field.setAccessible(true);
-            try {
-                if (field.get(toUpdateTicket) == null)
-                    field.set(toUpdateTicket, field.get(oldTicket));
-            } catch (IllegalAccessException e) {
-                log.info(e.getMessage());
-            }
-        }
+        fillObject(ticketField, toUpdateTicket, oldTicket);
         return toUpdateTicket;
     }
 
     @Override
-    public UserEntity fillOnUpdate(UserEntity toUpdateUser) {
-        UserEntity oldUser = userRepository.findById(toUpdateUser.getUserId());
+    public UserEntity fillOnUpdate(UserEntity toUpdateUser, UserEntity oldUser) {
         Field[] userField = UserEntity.class.getDeclaredFields();
-        for (Field field: userField){
+        fillObject(userField, toUpdateUser, oldUser);
+        return toUpdateUser;
+    }
+
+    private <T> void fillObject(Field[] fields, T updateObject, T oldObject){
+        for (Field field: fields){
             field.setAccessible(true);
             try {
-                if (field.get(toUpdateUser) == null)
-                    field.set(toUpdateUser, field.get(oldUser));
+                if (field.get(updateObject) == null)
+                    field.set(updateObject, field.get(oldObject));
             } catch (IllegalAccessException e) {
                 log.info(e.getMessage());
             }
         }
-        return toUpdateUser;
     }
-
 }
