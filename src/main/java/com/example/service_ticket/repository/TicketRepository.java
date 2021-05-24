@@ -5,6 +5,7 @@ import com.sample.model.Tables;
 import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Table;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -79,14 +80,14 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
                 .execute();
     }
 
-    public List<TicketEntity> findTicketByAssignee(long assigneeId){
+    public List<TicketEntity> findTicketByAssigneeId(long assigneeId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.USER_ASSIGNEE_ID.eq(assigneeId))
                 .fetch()
                 .into(TicketEntity.class);
     }
 
-    public List<TicketEntity> findTicketByCategoryWithoutAssignee(String category){
+    public List<TicketEntity> findTicketByCategoryAndAssigneeIdIsNull(String category){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.USER_ASSIGNEE_ID.isNull())
                 .and(Tables.TICKET.CATEGORY.eq(category))
@@ -97,6 +98,21 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByUserId(long useId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.CREATE_BY_ID.eq(useId))
+                .fetch()
+                .into(TicketEntity.class);
+    }
+
+    public List<TicketEntity> findTicketByStatusAndAssigneeId(String status, Long assigneeId){
+        return dslContext.selectFrom(Tables.TICKET)
+                .where(Tables.TICKET.STATUS.eq(status))
+                .and(Tables.TICKET.USER_ASSIGNEE_ID.eq(assigneeId))
+                .fetch()
+                .into(TicketEntity.class);
+    }
+
+    public List<TicketEntity> findTicketByCategory(String category){
+        return dslContext.selectFrom(Tables.TICKET)
+                .where(Tables.TICKET.CATEGORY.eq(category))
                 .fetch()
                 .into(TicketEntity.class);
     }

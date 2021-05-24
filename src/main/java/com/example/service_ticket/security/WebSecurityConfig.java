@@ -1,5 +1,6 @@
 package com.example.service_ticket.security;
 
+import com.example.service_ticket.controller.APIConstant;
 import com.example.service_ticket.security.jwt.JwtAuthEntryPoint;
 import com.example.service_ticket.security.jwt.JwtConfigurer;
 import com.example.service_ticket.security.jwt.JwtProvider;
@@ -19,10 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
-    private static final String AUTH_ENDPOINT = "/api/authentication/*";
-    private static final String TICKET_ENDPOINT = "/api/ticket/*";
-    private static final String MANAGER_ENDPOINT = "/api/manager/*";
-    private static final String KAFKA_ENDPOINT = "/api/kafka/*";
+    private static final String AUTH_ENDPOINT = APIConstant.API + APIConstant.AUTH + APIConstant.ANY;
+    private static final String TROUBLE_TICKET_ENDPOINT = APIConstant.API + APIConstant.TICKET + APIConstant.ANY;
+    private static final String DICTIONARY_ENDPOINT = APIConstant.API + APIConstant.DICTIONARY + APIConstant.ANY;
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
             "/v2/api-docs",
@@ -56,10 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT).permitAll()
-                .antMatchers(KAFKA_ENDPOINT).permitAll()
+                .antMatchers(TROUBLE_TICKET_ENDPOINT).permitAll()
+                .antMatchers(DICTIONARY_ENDPOINT).permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers(TICKET_ENDPOINT).hasRole("USER")
-                .antMatchers(MANAGER_ENDPOINT).hasRole("MANAGER")
                 .anyRequest().permitAll();
 
         httpSecurity.apply(new JwtConfigurer(jwtProvider));

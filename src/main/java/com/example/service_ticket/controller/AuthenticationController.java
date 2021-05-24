@@ -2,11 +2,12 @@ package com.example.service_ticket.controller;
 
 import com.example.service_ticket.model.AuthUserDto;
 import com.example.service_ticket.model.AuthenticationDto;
-import com.example.service_ticket.model.MessageDto;
 import com.example.service_ticket.model.UserDto;
 import com.example.service_ticket.security.jwt.JwtProvider;
 import com.example.service_ticket.security.jwt.JwtUser;
 import com.example.service_ticket.service.impl.user.UserServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/authentication/")
+@RequestMapping(APIConstant.API+APIConstant.AUTH)
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -45,31 +47,21 @@ public class AuthenticationController {
                     GrantedAuthority::getAuthority
             ).collect(Collectors.toList());
             String token = jwtProvider.createToken(user.getId(), user.getUsername(), roles);
-            return ResponseEntity.ok(new AuthUserDto(
-                    token, user.getId(), user.getEmail(), user.getUsername(), user.getFirstname(),
-                    user.getLastname(), roles
-            ));
+            return ResponseEntity.ok(AuthUserDto.convertDto(user, roles, token));
         } catch (AuthenticationServiceException exp) {
-
-            throw new BadCredentialsException("Invalid username or password");
+            log.info(exp.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody UserDto createUserDto) {
         try {
-            ResponseEntity<?> responseEntity;
-            if (userServiceImpl.existsUserByUsername(createUserDto.getUsername())){
-                responseEntity = ResponseEntity.badRequest().body(new MessageDto("Пользователь с таким именен уже зарегистрирован"));
-            } else if (userServiceImpl.existsUserByEmail(createUserDto.getEmail())){
-                responseEntity = ResponseEntity.badRequest().body(new MessageDto("Пользователь с таким email уже зарегистрирован"));
-            } else {
-                userServiceImpl.creatUser(UserDto.convertToEntity(createUserDto));
-                responseEntity = ResponseEntity.ok(new MessageDto("Пользователь зарегистрирован"));
-            }
-            return responseEntity;
+            userServiceImpl.creatUser(UserDto.convertToEntity(createUserDto));
+            return ResponseEntity.ok("Пользователь зарегистрирован");
         } catch (AuthenticationServiceException exp) {
-            throw new BadCredentialsException("Invalid username or password");
+            log.info(exp.getMessage());
+            return ResponseEntity.badRequest().body("Пользоваель уже зарегестрирован");
         }
     }
 }

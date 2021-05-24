@@ -1,4 +1,4 @@
-package com.example.service_ticket.exception;
+package com.example.service_ticket.exception.dictionary;
 
 public class StatusTransitionException extends RuntimeException{
 

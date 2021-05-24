@@ -8,6 +8,7 @@ import com.example.service_ticket.service.UpdateAutoFillService;
 import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void creatUser(UserEntity userEntity) {
+    public void creatUser(UserEntity userEntity) throws AuthenticationServiceException {
+        if (existsUserByEmail(userEntity.getEmail()) || existsUserByUsername(userEntity.getUsername()))
+            throw new AuthenticationServiceException("Пользователь уэе харегистрирован");
         userRepository.save(userEntity);
     }
 

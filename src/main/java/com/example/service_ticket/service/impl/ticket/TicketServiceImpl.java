@@ -2,6 +2,7 @@ package com.example.service_ticket.service.impl.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
+import com.example.service_ticket.exception.TicketNotFoundException;
 import com.example.service_ticket.repository.TicketRepository;
 import com.example.service_ticket.service.*;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
@@ -25,12 +26,23 @@ public class TicketServiceImpl implements TicketService {
     private final TicketValidationService ticketValidationService;
     private final TicketAutoFillService ticketAutoFillService;
     private final UserService userService;
+    //TODO: как правильно реализовать update ticket
+//    @Override
+//    public void updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException{
+//        TicketEntity oldTicket = getTicketById(ticketEntity.getTicketId()).orElseThrow(() -> new TicketNotFoundException(-1));
+//        UserEntity userEntity = userService.getCurrentUser();
+//        ticketEntity.setCategory(oldTicket.getCategory());
+//        ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
+//        ticketEntity.setUpdateById(userEntity.getUserId());
+//        ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
+//        ticketRepository.update(ticketEntity);
+//    }
 
     @Override
-    public void updateTicket(TicketEntity ticketEntity) {
+    public void updateTicketById(TicketEntity ticketEntity, Long id) throws TicketNotFoundException{
+        TicketEntity oldTicket = getTicketById(id).orElseThrow(() -> new TicketNotFoundException(id));
         UserEntity userEntity = userService.getCurrentUser();
-        ticketEntity.setCategory(ticketRepository.findById(ticketEntity.getTicketId()).getCategory());
-        TicketEntity oldTicket = ticketRepository.findById(ticketEntity.getTicketId());
+        ticketEntity.setCategory(oldTicket.getCategory());
         ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
@@ -53,26 +65,42 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public void deleteTicketById(Long id) throws TicketNotFoundException{
+        if (getTicketById(id).isEmpty()) throw new TicketNotFoundException(id);
+        ticketRepository.deleteById(id);
+    }
+
+    @Override
     public List<TicketEntity> getAllTicket() {
         return ticketRepository.findAll();
     }
 
     @Override
+    public List<TicketEntity> getAllTicketByAssigneeId(Long assigneeId) {
+        return ticketRepository.findTicketByAssigneeId(assigneeId);
+    }
+
+    @Override
+    public List<TicketEntity> getAllTicketByCategory(String category) {
+        return ticketRepository.findTicketByCategory(category);
+    }
+
+    @Override
     public Optional<TicketEntity> getTicketById(Long id) {
-        return Optional.of(ticketRepository.findById(id));
+        return Optional.ofNullable(ticketRepository.findById(id));
     }
 
     @Override
-    public List<TicketEntity> getTicketWithoutAssignee() {
+    public List<TicketEntity> getAllTicketCurrentUser() {
         UserEntity currentUser = userService.getCurrentUser();
-        return  ticketRepository.findTicketByCategoryWithoutAssignee(currentUser.getCategory());
+        return  ticketRepository.findTicketByUserId(currentUser.getUserId());
     }
 
     @Override
-    public List<TicketEntity> getTicketByAssignee() {
-        UserEntity currentUser = userService.getCurrentUser();
-        return  ticketRepository.findTicketByAssignee(currentUser.getUserId());
+    public List<TicketEntity> getTicketByStatusAndAssigneeId(String status, Long assigneeId) {
+        return  ticketRepository.findTicketByStatusAndAssigneeId(status, assigneeId);
     }
+
 
     public boolean existsTicketById(Long id){
         return getTicketById(id).isPresent();
