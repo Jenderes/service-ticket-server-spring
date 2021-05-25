@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryDictionaryImpl extends DictionaryService<CategoryDictionaryEntity> implements CategoryDictionaryService {
+public class CategoryDictionaryServiceImpl extends DictionaryService<CategoryDictionaryEntity> implements CategoryDictionaryService {
 
     @Autowired
-    public CategoryDictionaryImpl(@Value("${dictionary.category}") String path) {
-        super(path, DictionaryEntity.class);
+    public CategoryDictionaryServiceImpl(@Value("${dictionary.category}") String path) {
+        super(path, CategoryDictionaryEntity.class);
     }
 
     @Override

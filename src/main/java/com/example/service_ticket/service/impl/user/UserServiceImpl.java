@@ -2,6 +2,8 @@ package com.example.service_ticket.service.impl.user;
 
 import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;
+import com.example.service_ticket.exception.EmailAlreadyInUseException;
+import com.example.service_ticket.exception.UsernameAlreadyInUserException;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
 import com.example.service_ticket.service.UpdateAutoFillService;
@@ -33,9 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void creatUser(UserEntity userEntity) throws AuthenticationServiceException {
-        if (existsUserByEmail(userEntity.getEmail()) || existsUserByUsername(userEntity.getUsername()))
-            throw new AuthenticationServiceException("Пользователь уэе харегистрирован");
+    public void creatUser(UserEntity userEntity) throws EmailAlreadyInUseException, UsernameAlreadyInUserException{
+        if (existsUserByEmail(userEntity.getEmail()))
+            throw new EmailAlreadyInUseException(userEntity.getEmail());
+        if (existsUserByUsername(userEntity.getUsername()))
+            throw new UsernameAlreadyInUserException(userEntity.getUsername());
         userRepository.save(userEntity);
     }
 

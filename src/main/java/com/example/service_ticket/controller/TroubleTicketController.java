@@ -42,9 +42,9 @@ public class TroubleTicketController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> PatchTroubleTicketById(TroubleTicket troubleTicket, @PathVariable Long id){
         try {
-            // troubleTicket.setTicketId(id);
-            // ticketService.updateTicketById(TroubleTicket.convertToEntity(troubleTicket));
-            ticketService.updateTicketById(TroubleTicket.convertToEntity(troubleTicket), id);
+             troubleTicket.setTicketId(id);
+             ticketService.updateTicket(TroubleTicket.convertToEntity(troubleTicket));
+            // ticketService.updateTicketById(TroubleTicket.convertToEntity(troubleTicket), id);
             return ResponseEntity.noContent().build();
         } catch (TicketNotFoundException e) {
             log.info(e.getMessage());
@@ -62,15 +62,15 @@ public class TroubleTicketController {
             return ResponseEntity.notFound().build();
         }
     }
-    // TODO: Узнать правильность варианта реализации
+    // TODO: Правильный ли варианта реализации
     @GetMapping
     public ResponseEntity<?> getSpecificTroubleTicket(@RequestParam Map<String, String> params){
-        if (params.containsKey("status") && params.containsKey("assigneeId"))
+        if (params.containsKey("status") && params.containsKey("userAssigneeId"))
             return ResponseEntity.ok(ticketService.getTicketByStatusAndAssigneeId(params.get("status"),
-                    Long.parseLong(params.get("assigneeId"))));
-        if (params.containsKey("assigneeId") && !params.containsKey("status"))
-            return ResponseEntity.ok(ticketService.getAllTicketByAssigneeId(Long.parseLong(params.get("assigneeId"))));
-        if (params.containsKey("category"))
+                    Long.parseLong(params.get("userAssigneeId"))));
+        if (params.containsKey("userAssigneeId") && params.size() == 1)
+            return ResponseEntity.ok(ticketService.getAllTicketByAssigneeId(Long.parseLong(params.get("userAssigneeId"))));
+        if (params.containsKey("category") && params.size() == 1)
             return ResponseEntity.ok(ticketService.getAllTicketByCategory(params.get("category")));
         return ResponseEntity.ok(new ArrayList<>());
     }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StatusTransitionDictionaryServiceImpl extends DictionaryService<StatusTransitionDictionaryEntity> implements StatusTransitionDictionaryService {
@@ -19,11 +20,15 @@ public class StatusTransitionDictionaryServiceImpl extends DictionaryService<Sta
 
     @Override
     public List<StatusTransitionDictionaryEntity> getAllStatusTransitions() {
-        return null;
+        return super.getAllValues();
     }
 
     @Override
     public List<StatusTransitionDictionaryEntity> getStatusTransitionByFromStatsAndCategory(String fromStatus, String category) {
-        return null;
+        return super.getAllValues()
+                .stream()
+                .filter(statusTransition ->
+                    statusTransition.getFromStatus().equals(fromStatus)&&statusTransition.getCategory().equals(category))
+                .collect(Collectors.toList());
     }
 }
