@@ -6,13 +6,12 @@ import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.TicketNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface TicketService {
 
     void updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException;
-
-    // void updateTicketById(TicketEntity ticketEntity, Long id) throws TicketNotFoundException;
 
     void creatTicket(TicketEntity ticketEntity);
 
@@ -30,5 +29,6 @@ public interface TicketService {
 
     List<TicketEntity> getAllTicketCurrentUser();
 
-    List<TicketEntity> getTicketByStatusAndAssigneeId(String status, Long assigneeId);
+    List<TicketEntity> searchTicket(Map<String, String> searchParams);
+
 }
