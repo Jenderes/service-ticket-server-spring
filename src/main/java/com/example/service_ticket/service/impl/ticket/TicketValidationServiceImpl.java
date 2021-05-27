@@ -1,7 +1,7 @@
 package com.example.service_ticket.service.impl.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
-import com.example.service_ticket.exception.dictionary.StatusTransitionException;
+import com.example.service_ticket.exception.StatusTransitionException;
 import com.example.service_ticket.model.dictionary.StatusTransitionDictionaryEntity;
 import com.example.service_ticket.service.dictionary.StatusTransitionDictionaryService;
 import com.example.service_ticket.service.ticket.TicketValidationService;

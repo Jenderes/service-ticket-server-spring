@@ -101,15 +101,6 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findTicketByCondition(getConditionByParameters(searchParams));
     }
 
-    public boolean existsTicketById(Long id){
-        return getTicketById(id).isPresent();
-    }
-
-    public List<TicketEntity> getTicketUser(){
-        UserEntity currentUser = userService.getCurrentUser();
-        return  ticketRepository.findTicketByUserId(currentUser.getUserId());
-    }
-
     private static Condition getConditionByParameters(Map<String, String> conditions) throws SearchFieldNameNotFoundException {
         Map<Field<?>, String> mapCondition = new HashMap<>();
         Map<String, Field<?>> fieldNames = initialTableName();

@@ -1,9 +1,7 @@
 package com.example.service_ticket.service.impl.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
-import com.example.service_ticket.model.dictionary.CategoryDictionaryEntity;
 import com.example.service_ticket.service.dictionary.CategoryDictionaryService;
-import com.example.service_ticket.service.dictionary.DictionaryService;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

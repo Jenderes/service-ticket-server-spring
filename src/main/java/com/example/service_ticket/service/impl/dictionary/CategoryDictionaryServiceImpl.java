@@ -1,8 +1,6 @@
 package com.example.service_ticket.service.impl.dictionary;
 
-import com.example.service_ticket.exception.dictionary.CategoryNotFoundException;
 import com.example.service_ticket.model.dictionary.CategoryDictionaryEntity;
-import com.example.service_ticket.model.dictionary.DictionaryEntity;
 import com.example.service_ticket.service.dictionary.CategoryDictionaryService;
 import com.example.service_ticket.service.dictionary.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;

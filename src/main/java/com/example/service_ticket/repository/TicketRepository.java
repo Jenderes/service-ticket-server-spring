@@ -1,19 +1,14 @@
 package com.example.service_ticket.repository;
 
 import com.example.service_ticket.entity.TicketEntity;
-import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.sample.model.Tables;
 import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.impl.DSL;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-
-import static com.sample.model.Public.PUBLIC;
 
 @Repository
 @RequiredArgsConstructor

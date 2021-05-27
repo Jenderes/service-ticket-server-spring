@@ -1,6 +1,5 @@
 package com.example.service_ticket.service.dictionary;
 
-import com.example.service_ticket.exception.dictionary.ValueDictionaryNotFoundException;
 import com.example.service_ticket.model.dictionary.DictionaryEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,7 @@ public abstract class DictionaryService<T extends DictionaryEntity> {
         return  dictionaryValues;
     }
 
-    public Optional<T> getValueByName(String name) throws ValueDictionaryNotFoundException {
+    public Optional<T> getValueByName(String name) {
         return dictionaryValues.stream()
                 .filter(listValue -> listValue.getName()
                 .equals(name))

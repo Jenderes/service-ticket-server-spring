@@ -1,8 +1,6 @@
 package com.example.service_ticket.service.ticket;
 
-import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.TicketEntity;
-import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.TicketNotFoundException;
 
 import java.util.List;

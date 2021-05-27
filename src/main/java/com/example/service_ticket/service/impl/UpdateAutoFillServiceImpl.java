@@ -2,8 +2,6 @@ package com.example.service_ticket.service.impl;
 
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
-import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.repository.UserRepository;
 import com.example.service_ticket.service.UpdateAutoFillService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

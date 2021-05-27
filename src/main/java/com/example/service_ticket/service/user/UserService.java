@@ -2,7 +2,7 @@ package com.example.service_ticket.service.user;
 
 import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;
-import com.example.service_ticket.exception.dictionary.StatusTransitionException;
+import com.example.service_ticket.exception.StatusTransitionException;
 
 import java.util.List;
 import java.util.Optional;
