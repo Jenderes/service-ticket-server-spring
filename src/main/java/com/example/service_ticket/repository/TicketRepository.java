@@ -106,35 +106,10 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
                 .into(TicketEntity.class);
     }
 
-    public List<TicketEntity> findTicketByParams(Map<String, String> params){
+    public List<TicketEntity> findTicketByCondition(Condition condition){
         return dslContext.selectFrom(Tables.TICKET)
-                .where(condition(params))
+                .where(condition)
                 .fetch()
                 .into(TicketEntity.class);
-    }
-
-    private static Condition condition(Map<String, String> conditions) throws SearchFieldNameNotFoundException {
-        Map<Field<?>, String> mapCondition = new HashMap<>();
-        Map<String, Field<?>> fieldNames = initialTableName();
-        for (String keyCondition: conditions.keySet()){
-            if (!fieldNames.containsKey(keyCondition))
-                throw new SearchFieldNameNotFoundException(keyCondition);
-            mapCondition.put(fieldNames.get(keyCondition), conditions.get(keyCondition));
-        }
-        return DSL.condition(mapCondition);
-    }
-
-    private static Map<String, Field<?>> initialTableName(){
-        Map<String, Field<?>> tableNames = new HashMap<>();
-        Field<?>[] fields  = PUBLIC.TICKET.fields();
-        java.lang.reflect.Field[] fieldClass = TicketEntity.class.getDeclaredFields();
-        String[] fieldParams = new String[fieldClass.length];
-        for (int i= 0; i < fieldClass.length; i++) {
-            fieldParams[i] = fieldClass[i].getName();
-        }
-        for (int i = 0; i < fieldParams.length; i++){
-            tableNames.put(fieldParams[i], fields[i]);
-        }
-        return tableNames;
     }
 }

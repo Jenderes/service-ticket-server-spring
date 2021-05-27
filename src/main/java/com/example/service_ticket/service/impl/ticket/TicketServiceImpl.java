@@ -12,11 +12,17 @@ import com.example.service_ticket.service.ticket.TicketValidationService;
 import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.sample.model.Public.PUBLIC;
 
 @Service
 @Slf4j
@@ -92,7 +98,7 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketEntity> searchTicket(Map<String, String> searchParams) throws SearchFieldNameNotFoundException {
         if (searchParams.size() == 0)
             return ticketRepository.findAll();
-        return ticketRepository.findTicketByParams(searchParams);
+        return ticketRepository.findTicketByCondition(getConditionByParameters(searchParams));
     }
 
     public boolean existsTicketById(Long id){
@@ -104,4 +110,28 @@ public class TicketServiceImpl implements TicketService {
         return  ticketRepository.findTicketByUserId(currentUser.getUserId());
     }
 
+    private static Condition getConditionByParameters(Map<String, String> conditions) throws SearchFieldNameNotFoundException {
+        Map<Field<?>, String> mapCondition = new HashMap<>();
+        Map<String, Field<?>> fieldNames = initialTableName();
+        for (String keyCondition: conditions.keySet()){
+            if (!fieldNames.containsKey(keyCondition))
+                throw new SearchFieldNameNotFoundException(keyCondition);
+            mapCondition.put(fieldNames.get(keyCondition), conditions.get(keyCondition));
+        }
+        return DSL.condition(mapCondition);
+    }
+
+    private static Map<String, Field<?>> initialTableName(){
+        Map<String, Field<?>> tableNames = new HashMap<>();
+        Field<?>[] fields  = PUBLIC.TICKET.fields();
+        java.lang.reflect.Field[] fieldClass = TicketEntity.class.getDeclaredFields();
+        String[] fieldParams = new String[fieldClass.length];
+        for (int i= 0; i < fieldClass.length; i++) {
+            fieldParams[i] = fieldClass[i].getName();
+        }
+        for (int i = 0; i < fieldParams.length; i++){
+            tableNames.put(fieldParams[i], fields[i]);
+        }
+        return tableNames;
+    }
 }

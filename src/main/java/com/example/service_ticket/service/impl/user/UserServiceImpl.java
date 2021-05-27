@@ -1,8 +1,10 @@
 package com.example.service_ticket.service.impl.user;
 
 import com.example.service_ticket.entity.RoleEntity;
+import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.EmailAlreadyInUseException;
+import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.example.service_ticket.exception.UsernameAlreadyInUserException;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
@@ -10,13 +12,20 @@ import com.example.service_ticket.service.UpdateAutoFillService;
 import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Condition;
+import org.jooq.Field;
+import org.jooq.impl.DSL;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static com.sample.model.Public.PUBLIC;
 
 @Slf4j
 @Service
