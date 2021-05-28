@@ -6,6 +6,7 @@ import com.example.service_ticket.model.TroubleTicket;
 import com.example.service_ticket.service.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,9 @@ public class TroubleTicketController {
 
     @PostMapping
     public ResponseEntity<?> CreateTroubleTicket(@RequestBody TroubleTicket troubleTicket){
-        ticketService.creatTicket(TroubleTicket.convertToEntity(troubleTicket));
-        return ResponseEntity.created(URI.create("ticket/"+troubleTicket.getCategory())).body("Ticket created");
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(TroubleTicket.convertToDto(ticketService.creatTicket(TroubleTicket.convertToEntity(troubleTicket))));
     }
 
     @GetMapping("/{id}")
@@ -34,16 +36,16 @@ public class TroubleTicketController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() ->ResponseEntity.notFound().build());
     }
-    //TODO: как правильно реализовать PATCH
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> PatchTroubleTicketById(@RequestBody TroubleTicket troubleTicket, @PathVariable Long id){
         try {
              troubleTicket.setTicketId(id);
-             ticketService.updateTicket(TroubleTicket.convertToEntity(troubleTicket));
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(TroubleTicket.convertToDto(ticketService.updateTicket(TroubleTicket.convertToEntity(troubleTicket))));
         } catch (TicketNotFoundException e) {
             log.info(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("не нвйде тикет по id: " + id);
         }
     }
 
@@ -51,13 +53,14 @@ public class TroubleTicketController {
     public ResponseEntity<?> DeleteTroubleTicketById(@PathVariable Long id) throws SearchFieldNameNotFoundException {
         try {
             ticketService.deleteTicketById(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("Удален тикет с id: " + id);
         } catch (TicketNotFoundException e) {
             log.info(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("не нвйде тикет по id: " + id);
         }
     }
-    // TODO: Правильный ли варианта реализации
+
     @GetMapping
     public ResponseEntity<?> getSpecificTroubleTicket(@RequestParam Map<String, String> params){
         try {

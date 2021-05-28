@@ -1,6 +1,7 @@
 package com.example.service_ticket.repository;
 
 import com.example.service_ticket.entity.RoleEntity;
+import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.entity.UserRoleEntity;
 import com.sample.model.Tables;
@@ -54,17 +55,17 @@ public class RoleRepository implements BaseRepository<RoleEntity, Long>{
     }
 
     @Override
-    public void update(RoleEntity entity) {
-        dslContext.update(Tables.ROLE)
+    public RoleEntity update(RoleEntity entity) {
+        return dslContext.update(Tables.ROLE)
                 .set(Tables.ROLE.ROLE_NAME, entity.getRoleName())
-                .execute();
+                .returning().fetchOne().into(RoleEntity.class);
     }
 
     @Override
-    public void save(RoleEntity entity) {
-        dslContext.insertInto(Tables.ROLE)
+    public RoleEntity save(RoleEntity entity) {
+        return dslContext.insertInto(Tables.ROLE)
                 .set(Tables.ROLE.ROLE_NAME, entity.getRoleName())
-                .execute();
+                .returning().fetchOne().into(RoleEntity.class);
     }
 
     public List<RoleEntity> findRolesByUserName(String username){

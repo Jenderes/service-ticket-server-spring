@@ -1,6 +1,7 @@
 package com.example.service_ticket.repository;
 
 import com.example.service_ticket.entity.TicketEntity;
+import com.example.service_ticket.exception.TicketNotFoundException;
 import com.sample.model.Tables;
 import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,8 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     }
 
     @Override
-    public void update(TicketEntity entity) {
-        dslContext.update(Tables.TICKET)
+    public TicketEntity update(TicketEntity entity) {
+        return dslContext.update(Tables.TICKET)
                 .set(Tables.TICKET.NAME, entity.getName())
                 .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
@@ -61,12 +62,12 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
                 .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
                 .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
                 .where(Tables.TICKET.TICKET_ID.eq(entity.getTicketId()))
-                .execute();
+                .returning().fetchOne().into(TicketEntity.class);
     }
 
     @Override
-    public void save(TicketEntity entity) {
-        dslContext.insertInto(Tables.TICKET)
+    public TicketEntity save(TicketEntity entity) {
+        return dslContext.insertInto(Tables.TICKET)
                 .set(Tables.TICKET.NAME, entity.getName())
                 .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
@@ -77,7 +78,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
                 .set(Tables.TICKET.UPDATE_DATE, entity.getUpdateDate())
                 .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
                 .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
-                .execute();
+                .returning().fetchOne().into(TicketEntity.class);
     }
 
     public List<TicketEntity> findTicketByAssigneeId(long assigneeId){

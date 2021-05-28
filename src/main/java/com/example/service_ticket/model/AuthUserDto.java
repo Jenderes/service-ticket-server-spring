@@ -21,6 +21,7 @@ public class AuthUserDto {
     private String username;
     private String firstName;
     private String lastName;
+    private String category;
     private List<String> roles;
 
     public static AuthUserDto convertDto(JwtUser jwtUser ,List<String> roles, String token){
@@ -31,6 +32,7 @@ public class AuthUserDto {
                 jwtUser.getUsername(),
                 jwtUser.getFirstname(),
                 jwtUser.getLastname(),
+                jwtUser.getCategory(),
                 roles
         );
     }

@@ -16,6 +16,7 @@ public class JwtUser implements UserDetails {
 
     private String firstname;
     private String lastname;
+    private String category;
     private final boolean enabled;
     // Отражает разрешения(роли) выданые пользователю
     private final Collection<? extends GrantedAuthority> authorities;
@@ -23,7 +24,7 @@ public class JwtUser implements UserDetails {
     // Конструктор пользователя
 
 
-    public JwtUser(Long id, String username, String email,String password, String firstname, String lastname, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUser(Long id, String username, String email,String password, String firstname, String lastname, String category,  boolean enabled, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -32,6 +33,7 @@ public class JwtUser implements UserDetails {
         this.lastname = lastname;
         this.enabled = enabled;
         this.authorities = authorities;
+        this.category = category;
     }
 
     public String getEmail() {
@@ -112,5 +114,13 @@ public class JwtUser implements UserDetails {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -22,6 +22,7 @@ public class JwtUserFactory {
                 userDto.getPassword(),
                 userDto.getFirstName(),
                 userDto.getLastName(),
+                userDto.getCategory(),
                 userDto.getStatus().equals("ACTIVE"),
                 mapToGrantedAuthorities(new ArrayList<>(userDto.getRoles()))
         );
