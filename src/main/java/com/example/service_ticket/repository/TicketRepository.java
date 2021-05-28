@@ -4,6 +4,7 @@ import com.example.service_ticket.entity.TicketEntity;
 import com.sample.model.Tables;
 import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
@@ -79,17 +80,9 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
                 .execute();
     }
 
-    public List<TicketEntity> findTicketByAssignee(long assigneeId){
+    public List<TicketEntity> findTicketByAssigneeId(long assigneeId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.USER_ASSIGNEE_ID.eq(assigneeId))
-                .fetch()
-                .into(TicketEntity.class);
-    }
-
-    public List<TicketEntity> findTicketByCategoryWithoutAssignee(String category){
-        return dslContext.selectFrom(Tables.TICKET)
-                .where(Tables.TICKET.USER_ASSIGNEE_ID.isNull())
-                .and(Tables.TICKET.CATEGORY.eq(category))
                 .fetch()
                 .into(TicketEntity.class);
     }
@@ -97,6 +90,20 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByUserId(long useId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.CREATE_BY_ID.eq(useId))
+                .fetch()
+                .into(TicketEntity.class);
+    }
+
+    public List<TicketEntity> findTicketByCategory(String category){
+        return dslContext.selectFrom(Tables.TICKET)
+                .where(Tables.TICKET.CATEGORY.eq(category))
+                .fetch()
+                .into(TicketEntity.class);
+    }
+
+    public List<TicketEntity> findTicketByCondition(Condition condition){
+        return dslContext.selectFrom(Tables.TICKET)
+                .where(condition)
                 .fetch()
                 .into(TicketEntity.class);
     }

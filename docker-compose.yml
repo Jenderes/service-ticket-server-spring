@@ -24,6 +24,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: manager_ticket
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped

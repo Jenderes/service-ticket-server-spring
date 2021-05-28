@@ -2,7 +2,7 @@ package com.example.service_ticket.security.jwt;
 
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.model.UserDto;
-import com.example.service_ticket.service.impl.UserServiceImpl;
+import com.example.service_ticket.service.impl.user.UserServiceImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

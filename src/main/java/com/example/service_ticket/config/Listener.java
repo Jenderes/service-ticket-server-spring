@@ -1,5 +1,6 @@
-package com.example.service_ticket.model;
+package com.example.service_ticket.config;
 
+import com.example.service_ticket.model.RequestMessageDto;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;

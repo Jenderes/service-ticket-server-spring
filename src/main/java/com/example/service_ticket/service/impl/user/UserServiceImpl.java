@@ -1,11 +1,13 @@
-package com.example.service_ticket.service.impl;
+package com.example.service_ticket.service.impl.user;
 
 import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;
+import com.example.service_ticket.exception.EmailAlreadyInUseException;
+import com.example.service_ticket.exception.UsernameAlreadyInUserException;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
 import com.example.service_ticket.service.UpdateAutoFillService;
-import com.example.service_ticket.service.UserService;
+import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -26,12 +28,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(UserEntity userEntity) {
-        userEntity = updateAutoFillService.fillOnUpdate(userEntity);
+        UserEntity oldUser = userRepository.findById(userEntity.getUserId());
+        userEntity = updateAutoFillService.fillOnUpdate(userEntity, oldUser);
         userRepository.update(userEntity);
     }
 
     @Override
-    public void creatUser(UserEntity userEntity) {
+    public void creatUser(UserEntity userEntity) throws EmailAlreadyInUseException, UsernameAlreadyInUserException{
+        if (existsUserByEmail(userEntity.getEmail()))
+            throw new EmailAlreadyInUseException(userEntity.getEmail());
+        if (existsUserByUsername(userEntity.getUsername()))
+            throw new UsernameAlreadyInUserException(userEntity.getUsername());
         userRepository.save(userEntity);
     }
 
@@ -56,10 +63,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getCurrentUser() {
+    public UserEntity getCurrentUser() throws IllegalStateException{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        return getUserByUsername(username).get();
+        return getUserByUsername(username).orElseThrow(
+                () -> new IllegalStateException("CurrentUser not found")
+        );
     }
 
     @Override
@@ -79,7 +88,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<RoleEntity> getRoleByUsername(String username){
-        List<RoleEntity> roleEntities= roleRepository.findRolesByUserName(username);
         return roleRepository.findRolesByUserName(username);
     }
 }
