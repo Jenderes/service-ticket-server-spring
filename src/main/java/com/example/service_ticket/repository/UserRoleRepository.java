@@ -1,5 +1,6 @@
 package com.example.service_ticket.repository;
 
+import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.entity.UserRoleEntity;
 import com.sample.model.Tables;
 import com.sample.model.tables.records.UserRoleRecord;
@@ -48,19 +49,19 @@ public class UserRoleRepository implements BaseRepository<UserRoleEntity, Long> 
     }
 
     @Override
-    public void update(UserRoleEntity entity) {
-        dslContext.update(Tables.USER_ROLE)
+    public UserRoleEntity update(UserRoleEntity entity) {
+        return dslContext.update(Tables.USER_ROLE)
                 .set(Tables.USER_ROLE.ROLE_ID, entity.getRoleId())
                 .set(Tables.USER_ROLE.USER_ID, entity.getUserId())
                 .where(Tables.USER_ROLE.USER_ID.eq(entity.getUserId()))
-                .execute();
+                .returning().fetchOne().into(UserRoleEntity.class);
     }
 
     @Override
-    public void save(UserRoleEntity entity) {
-        dslContext.insertInto(Tables.USER_ROLE)
+    public UserRoleEntity save(UserRoleEntity entity) {
+        return dslContext.insertInto(Tables.USER_ROLE)
                 .set(Tables.USER_ROLE.ROLE_ID, entity.getRoleId())
                 .set(Tables.USER_ROLE.USER_ID, entity.getUserId())
-                .execute();
+                .returning().fetchOne().into(UserRoleEntity.class);
     }
 }

@@ -9,19 +9,15 @@ import java.util.Optional;
 
 public interface TicketService {
 
-    void updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException;
+    TicketEntity updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException;
 
-    void creatTicket(TicketEntity ticketEntity);
+    TicketEntity creatTicket(TicketEntity ticketEntity);
 
     void deleteTicket(TicketEntity ticketEntity);
 
     void deleteTicketById(Long id);
 
     List<TicketEntity> getAllTicket();
-
-    List<TicketEntity> getAllTicketByAssigneeId(Long assigneeId);
-
-    List<TicketEntity> getAllTicketByCategory(String category);
 
     Optional<TicketEntity> getTicketById(Long id);
 

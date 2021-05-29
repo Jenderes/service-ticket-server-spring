@@ -36,25 +36,27 @@ public class TicketServiceImpl implements TicketService {
     private final UserService userService;
 
     @Override
-    public void updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException{
+    public TicketEntity updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException{
         Long ticketId = ticketEntity.getTicketId();
-        TicketEntity oldTicket = getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
+        TicketEntity oldTicket = ticketRepository.findById(ticketId);
+        if (oldTicket == null)
+            throw new TicketNotFoundException(ticketId);
         UserEntity userEntity = userService.getCurrentUser();
         ticketEntity.setCategory(oldTicket.getCategory());
         ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
-        ticketRepository.update(ticketEntity);
+        return ticketRepository.update(ticketEntity);
     }
 
     @Override
-    public void creatTicket(TicketEntity ticketEntity) {
+    public TicketEntity creatTicket(TicketEntity ticketEntity) {
         UserEntity userEntity = userService.getCurrentUser();
         ticketEntity.setCreateById(userEntity.getUserId());
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity.setUserFullName(userEntity.getLastName() + " " + userEntity.getFirstName());
         ticketEntity = ticketAutoFillService.fillOnCreate(ticketEntity);
-        ticketRepository.save(ticketEntity);
+        return ticketRepository.save(ticketEntity);
     }
 
     @Override
@@ -64,23 +66,14 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicketById(Long id) throws TicketNotFoundException{
-        if (getTicketById(id).isEmpty()) throw new TicketNotFoundException(id);
+        TicketEntity deleteTicket = getTicketById(id)
+                .orElseThrow(() -> new TicketNotFoundException(id));
         ticketRepository.deleteById(id);
     }
 
     @Override
     public List<TicketEntity> getAllTicket() {
         return ticketRepository.findAll();
-    }
-
-    @Override
-    public List<TicketEntity> getAllTicketByAssigneeId(Long assigneeId) {
-        return ticketRepository.findTicketByAssigneeId(assigneeId);
-    }
-
-    @Override
-    public List<TicketEntity> getAllTicketByCategory(String category) {
-        return ticketRepository.findTicketByCategory(category);
     }
 
     @Override

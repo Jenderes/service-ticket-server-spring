@@ -14,7 +14,7 @@ public interface BaseRepository<T, ID> {
 
     void deleteById(ID id);
 
-    void update(T entity);
+    T update(T entity);
 
-    void save(T entity);
+    T save(T entity);
 }

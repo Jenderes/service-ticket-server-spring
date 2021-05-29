@@ -1,5 +1,6 @@
 package com.example.service_ticket.repository;
 
+import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.sample.model.Tables;
 import com.sample.model.tables.records.RoleRecord;
@@ -51,8 +52,8 @@ public class UserRepository implements BaseRepository<UserEntity, Long> {
     }
 
     @Override
-    public void update(UserEntity entity) {
-        dslContext.update(Tables.USER)
+    public UserEntity update(UserEntity entity) {
+        return dslContext.update(Tables.USER)
                 .set(Tables.USER.USERNAME, entity.getUsername())
                 .set(Tables.USER.EMAIL, entity.getEmail())
                 .set(Tables.USER.FIRST_NAME, entity.getFirstName())
@@ -62,12 +63,12 @@ public class UserRepository implements BaseRepository<UserEntity, Long> {
                 .set(Tables.USER.CATEGORY, entity.getCategory())
                 .set(Tables.USER.PASSWORD, entity.getPassword())
                 .where(Tables.USER.USER_ID.eq(entity.getUserId()))
-                .execute();
+                .returning().fetchOne().into(UserEntity.class);
     }
 
     @Override
-    public void save(UserEntity entity) {
-        dslContext.insertInto(Tables.USER)
+    public UserEntity save(UserEntity entity) {
+        UserEntity userEntity = dslContext.insertInto(Tables.USER)
                 .set(Tables.USER.USERNAME, entity.getUsername())
                 .set(Tables.USER.EMAIL, entity.getEmail())
                 .set(Tables.USER.FIRST_NAME, entity.getFirstName())
@@ -76,18 +77,16 @@ public class UserRepository implements BaseRepository<UserEntity, Long> {
                 .set(Tables.USER.STATUS, "ACTIVE")
                 .set(Tables.USER.CATEGORY, entity.getCategory())
                 .set(Tables.USER.PASSWORD, bCryptPasswordEncoder.encode(entity.getPassword()))
-                .execute();
+                .returning().fetchOne().into(UserEntity.class);
         RoleRecord roleRecord = dslContext.selectFrom(Tables.ROLE)
                 .where(Tables.ROLE.ROLE_NAME.eq("ROLE_USER"))
                 .fetchAny();
-        UserRecord userRecord = dslContext.selectFrom(Tables.USER)
-                .where(Tables.USER.USERNAME.eq(entity.getUsername()))
-                .fetchAny();
-        if(userRecord != null && roleRecord != null)
+        if(userEntity != null && roleRecord != null)
             dslContext.insertInto(Tables.USER_ROLE)
-                    .set(Tables.USER_ROLE.USER_ID, userRecord.getUserId())
+                    .set(Tables.USER_ROLE.USER_ID, userEntity.getUserId())
                     .set(Tables.USER_ROLE.ROLE_ID, roleRecord.getRoleId())
                     .execute();
+        return userEntity;
     }
 
     public boolean existsById(Long id) {

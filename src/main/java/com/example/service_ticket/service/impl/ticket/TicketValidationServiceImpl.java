@@ -27,8 +27,8 @@ public class TicketValidationServiceImpl implements TicketValidationService {
     public void validateOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket) {
         List<StatusTransitionDictionaryEntity> listStatus = statusTransitionDictionaryService.getStatusTransitionByFromStatsAndCategory(oldTicket.getStatus(), oldTicket.getCategory());
         try {
-            if (listStatus.parallelStream()
-                    .anyMatch(statusTransitionDictionaryEntity ->
+            if (listStatus.stream()
+                    .noneMatch(statusTransitionDictionaryEntity ->
                             statusTransitionDictionaryEntity.getToStatus().equals(toUpdateTicket.getStatus()))){
                 throw new StatusTransitionException();
             }

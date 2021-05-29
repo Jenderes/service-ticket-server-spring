@@ -23,6 +23,7 @@ public class UserDto {
     private String phoneNumber;
     private List<RoleEntity> roles;
     private String status;
+    private String category;
 
     public static UserEntity convertToEntity(UserDto userDto){
         UserEntity newUser = new UserEntity();
@@ -33,6 +34,7 @@ public class UserDto {
         newUser.setLastName(userDto.lastName);
         newUser.setFirstName(userDto.firstName);
         newUser.setPhoneNumber(userDto.phoneNumber);
+        newUser.setCategory(userDto.category);
         return newUser;
     }
     public static UserDto convertToDto(UserEntity userEntity, List<RoleEntity> roles){
@@ -46,6 +48,7 @@ public class UserDto {
         newUserDto.setPhoneNumber(userEntity.getPhoneNumber());
         newUserDto.setRoles(roles);
         newUserDto.setStatus(userEntity.getStatus());
+        newUserDto.setCategory(userEntity.getCategory());
         return newUserDto;
     }
 
