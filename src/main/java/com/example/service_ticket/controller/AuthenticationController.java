@@ -35,7 +35,7 @@ public class AuthenticationController {
     private final JwtProvider jwtProvider;
     private final UserService userService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationDto requestDto) {
         try {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getUsername(), requestDto.getPassword()));
@@ -51,7 +51,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDto createUserDto) {
         try {
             userService.creatUser(UserDto.convertToEntity(createUserDto));
@@ -60,5 +60,10 @@ public class AuthenticationController {
             log.info(exp.getMessage());
             return ResponseEntity.badRequest().body(exp.getMessage());
         }
+    }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> findUser(@PathVariable Long id){
+        return userService.getUserById(id).map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
