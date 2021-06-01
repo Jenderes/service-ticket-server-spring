@@ -1,8 +1,8 @@
-package com.example.service_ticket.service.impl;
+package com.example.service_ticket.service.impl.autofill;
 
 import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
-import com.example.service_ticket.service.UpdateAutoFillService;
+import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

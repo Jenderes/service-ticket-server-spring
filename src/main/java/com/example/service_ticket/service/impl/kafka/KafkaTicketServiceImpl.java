@@ -1,7 +1,7 @@
 package com.example.service_ticket.service.impl.kafka;
 
 import com.example.service_ticket.entity.TicketEntity;
-import com.example.service_ticket.model.TicketEvent;
+import com.example.service_ticket.model.kafka.TicketEvent;
 import com.example.service_ticket.service.kafka.KafkaTicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

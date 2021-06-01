@@ -1,4 +1,4 @@
-package com.example.service_ticket.model;
+package com.example.service_ticket.model.auth;
 
 import com.example.service_ticket.entity.RoleEntity;
 import com.example.service_ticket.entity.UserEntity;

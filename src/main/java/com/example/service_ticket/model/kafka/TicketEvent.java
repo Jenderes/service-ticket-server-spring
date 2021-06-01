@@ -1,4 +1,4 @@
-package com.example.service_ticket.model;
+package com.example.service_ticket.model.kafka;
 
 
 import com.example.service_ticket.entity.TicketEntity;
@@ -25,7 +25,14 @@ public class TicketEvent {
 
     public TicketEvent(TicketEntity previousState, TicketEntity currentState) {
         id = UUID.randomUUID().toString();
+        this.eventDate = OffsetDateTime.now();
         this.previousState = previousState;
+        this.currentState = currentState;
+    }
+
+    public TicketEvent(TicketEntity currentState) {
+        id = UUID.randomUUID().toString();
+        this.eventDate = OffsetDateTime.now();
         this.currentState = currentState;
     }
 }
