@@ -3,7 +3,7 @@
     "displayName": "1",
     "name": "2",
     "category": "ETHERNET",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "ASSIGNED"
   },
   {
@@ -24,14 +24,14 @@
     "displayName": "5",
     "name": "6",
     "category": "ETHERNET",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "REJECTED"
   },
   {
     "displayName": "2",
     "name": "3",
     "category": "DEFECT",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "ASSIGNED"
   },
   {
@@ -49,24 +49,10 @@
     "toStatus": "COMPLETE"
   },
   {
-    "displayName": "6",
-    "name": "6",
-    "category": "DEFECT",
-    "fromStatus": "CREATE",
-    "toStatus": "REJECTED"
-  },
-  {
-    "displayName": "1",
-    "name": "2",
-    "category": "STORE",
-    "fromStatus": "OPEN",
-    "toStatus": "CREATE"
-  },
-  {
     "displayName": "3",
     "name": "4",
     "category": "STORE",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "ASSIGNED"
   },
   {
@@ -91,17 +77,10 @@
     "toStatus": "REJECTED"
   },
   {
-    "displayName": "8",
-    "name": "9",
-    "category": "STORE",
-    "fromStatus": "CREATE",
-    "toStatus": "REJECTED"
-  },
-  {
     "displayName": "1",
     "name": "2",
     "category": "TV",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "ASSIGNED"
   },
   {
@@ -122,14 +101,14 @@
     "displayName": "1",
     "name": "2",
     "category": "TV",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "REJECTED"
   },
   {
     "displayName": "1",
     "name": "2",
     "category": "MOBILE",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
     "toStatus": "ASSIGNED"
   },
   {
@@ -150,7 +129,14 @@
     "displayName": "1",
     "name": "2",
     "category": "MOBILE",
-    "fromStatus": "CREATE",
+    "fromStatus": "OPEN",
+    "toStatus": "REJECTED"
+  },
+  {
+    "displayName": "1",
+    "name": "2",
+    "category": "MOBILE",
+    "fromStatus": "ASSIGNED",
     "toStatus": "REJECTED"
   }
 ]

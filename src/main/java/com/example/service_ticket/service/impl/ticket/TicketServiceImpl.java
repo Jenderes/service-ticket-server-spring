@@ -5,7 +5,8 @@ import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.example.service_ticket.exception.TicketNotFoundException;
 import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.service.*;
+import com.example.service_ticket.service.autofill.UpdateAutoFillService;
+import com.example.service_ticket.service.kafka.KafkaTicketService;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
 import com.example.service_ticket.service.ticket.TicketService;
 import com.example.service_ticket.service.ticket.TicketValidationService;
@@ -34,6 +35,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketValidationService ticketValidationService;
     private final TicketAutoFillService ticketAutoFillService;
     private final UserService userService;
+    private final KafkaTicketService kafkaTicketService;
 
     @Override
     public TicketEntity updateTicket(TicketEntity ticketEntity) throws TicketNotFoundException{
@@ -46,7 +48,9 @@ public class TicketServiceImpl implements TicketService {
         ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
-        return ticketRepository.update(ticketEntity);
+        TicketEntity currentTicket = ticketRepository.update(ticketEntity);
+        kafkaTicketService.sendOnUpdate(oldTicket, currentTicket);
+        return currentTicket;
     }
 
     @Override
@@ -56,7 +60,9 @@ public class TicketServiceImpl implements TicketService {
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity.setUserFullName(userEntity.getLastName() + " " + userEntity.getFirstName());
         ticketEntity = ticketAutoFillService.fillOnCreate(ticketEntity);
-        return ticketRepository.save(ticketEntity);
+        TicketEntity currentTicket = ticketRepository.save(ticketEntity);
+        kafkaTicketService.sendOnCreate(currentTicket);
+        return currentTicket;
     }
 
     @Override

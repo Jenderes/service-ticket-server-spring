@@ -6,7 +6,7 @@ import com.example.service_ticket.exception.EmailAlreadyInUseException;
 import com.example.service_ticket.exception.UsernameAlreadyInUserException;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
-import com.example.service_ticket.service.UpdateAutoFillService;
+import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import com.example.service_ticket.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

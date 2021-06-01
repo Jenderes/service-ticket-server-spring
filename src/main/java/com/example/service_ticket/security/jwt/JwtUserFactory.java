@@ -1,7 +1,7 @@
 package com.example.service_ticket.security.jwt;
 
 import com.example.service_ticket.entity.RoleEntity;
-import com.example.service_ticket.model.UserDto;
+import com.example.service_ticket.model.auth.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -4,30 +4,24 @@ import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.TicketNotFoundException;
 import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.service.UpdateAutoFillService;
+import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import com.example.service_ticket.service.impl.ticket.TicketServiceImpl;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
-import com.example.service_ticket.service.ticket.TicketService;
 import com.example.service_ticket.service.ticket.TicketValidationService;
 import com.example.service_ticket.service.user.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 public class TicketServiceMock {

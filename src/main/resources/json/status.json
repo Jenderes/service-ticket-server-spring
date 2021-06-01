@@ -1,11 +1,7 @@
 [
   {
-    "displayName": "Выполнено",
+    "displayName": "Создано",
     "name": "OPEN"
-  },
-  {
-    "displayName": "Обрабатывается",
-    "name": "CREATE"
   },
   {
     "displayName": "Выполняется",

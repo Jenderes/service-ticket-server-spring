@@ -1,4 +1,4 @@
-package com.example.service_ticket.model;
+package com.example.service_ticket.model.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
 import lombok.*;

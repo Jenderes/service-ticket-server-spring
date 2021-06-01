@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-public class KafkaTopicConfig {
+public class KafkaConfig {
 
     private final KafkaProperties kafkaProperties;
 
@@ -37,9 +37,10 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic("ticket-service", 1, (short) 1);
+        return new NewTopic("ticket-services", 1, (short) 1);
     }
 
+    //TODO испробывать jakson
     @Bean
     public Map<String, Object> producerConfigs() {
         Map<String, Object> props =

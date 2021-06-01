@@ -2,12 +2,12 @@
   {
     "displayName": "Интернет",
     "name": "ETHERNET",
-    "initialStatus": "CREATE"
+    "initialStatus": "OPEN"
   },
   {
     "displayName": "Дефекты",
     "name": "DEFECT",
-    "initialStatus": "CREATE"
+    "initialStatus": "OPEN"
   },
   {
     "displayName": "Магазтин",
@@ -17,11 +17,11 @@
   {
   "displayName": "Телевиденье",
   "name": "TV",
-  "initialStatus": "CREATE"
+  "initialStatus": "OPEN"
   },
   {
     "displayName": "Мобильная связь",
     "name": "MOBILE",
-    "initialStatus": "CREATE"
+    "initialStatus": "OPEN"
   }
 ]

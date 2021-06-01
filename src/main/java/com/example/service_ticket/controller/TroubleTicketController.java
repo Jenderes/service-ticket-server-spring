@@ -2,7 +2,7 @@ package com.example.service_ticket.controller;
 
 import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.example.service_ticket.exception.TicketNotFoundException;
-import com.example.service_ticket.model.TroubleTicket;
+import com.example.service_ticket.model.ticket.TroubleTicket;
 import com.example.service_ticket.service.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
