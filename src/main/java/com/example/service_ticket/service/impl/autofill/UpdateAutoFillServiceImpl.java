@@ -1,6 +1,7 @@
 package com.example.service_ticket.service.impl.autofill;
 
 import com.example.service_ticket.entity.TicketEntity;
+import com.example.service_ticket.entity.TicketInformationEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class UpdateAutoFillServiceImpl implements UpdateAutoFillService {
     @Override
     public TicketEntity fillOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket) {
         Field[] ticketField = TicketEntity.class.getDeclaredFields();
+        Field[] ticketInformationField = TicketInformationEntity.class.getDeclaredFields();
+        fillObject(ticketInformationField, toUpdateTicket.getTicketInformation(), oldTicket.getTicketInformation());
         fillObject(ticketField, toUpdateTicket, oldTicket);
         return toUpdateTicket;
     }

@@ -1,6 +1,7 @@
 package com.example.service_ticket.model.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
+import com.example.service_ticket.entity.TicketInformationEntity;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -28,13 +29,14 @@ public class TroubleTicket {
                 troubleTicket.createBytId,
                 troubleTicket.userAssigneeId,
                 troubleTicket.updateById,
-                troubleTicket.name,
-                troubleTicket.description,
-                troubleTicket.status,
-                troubleTicket.category,
-                troubleTicket.updateDate,
-                troubleTicket.createDate,
-                troubleTicket.userFullName
+                new TicketInformationEntity(
+                        troubleTicket.name,
+                        troubleTicket.description,
+                        troubleTicket.category,
+                        troubleTicket.status,
+                        troubleTicket.userFullName,
+                        troubleTicket.createDate,
+                        troubleTicket.updateDate)
         );
     }
     public static TroubleTicket convertToDto(TicketEntity ticketEntity){
@@ -43,13 +45,13 @@ public class TroubleTicket {
                 ticketEntity.getCreateById(),
                 ticketEntity.getUserAssigneeId(),
                 ticketEntity.getUpdateById(),
-                ticketEntity.getName(),
-                ticketEntity.getDescription(),
-                ticketEntity.getStatus(),
-                ticketEntity.getCategory(),
-                ticketEntity.getUpdateDate(),
-                ticketEntity.getCreateDate(),
-                ticketEntity.getUserFullName()
+                ticketEntity.getTicketInformation().getName(),
+                ticketEntity.getTicketInformation().getDescription(),
+                ticketEntity.getTicketInformation().getStatus(),
+                ticketEntity.getTicketInformation().getCategory(),
+                ticketEntity.getTicketInformation().getUpdateDate(),
+                ticketEntity.getTicketInformation().getCreateDate(),
+                ticketEntity.getTicketInformation().getUserFullName()
         );
     }
 }

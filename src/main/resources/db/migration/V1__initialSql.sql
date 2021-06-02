@@ -4,15 +4,11 @@ CREATE TABLE public.ticket
     create_by_id bigint NOT NULL,
     user_assignee_id bigint ,
     update_by_id bigint NOT NULL,
-    name VARCHAR(50),
-    description VARCHAR(50),
-    status VARCHAR(50),
-    category VARCHAR(50),
-    create_date date,
-    update_date date,
-    user_full_name VARCHAR(50),
+    ticket_information jsonb,
     CONSTRAINT request_pkey PRIMARY KEY (ticket_id)
 );
+ALTER TABLE public.ticket
+    OWNER to postgres;
 
 CREATE TABLE public."user"
 (
@@ -21,12 +17,14 @@ CREATE TABLE public."user"
     email VARCHAR(50),
     first_name VARCHAR(50),
     last_name VARCHAR(50),
-    password VARCHAR(50),
+    password VARCHAR(300),
     category VARCHAR(50),
     status VARCHAR(50),
     phone_number VARCHAR(50),
     CONSTRAINT user_id PRIMARY KEY (user_id)
 );
+ALTER TABLE public."user"
+    OWNER to postgres;
 
 CREATE TABLE public.role
 (
@@ -34,6 +32,8 @@ CREATE TABLE public.role
     role_name VARCHAR(50),
     CONSTRAINT role_pkey PRIMARY KEY (role_id)
 );
+ALTER TABLE public.role
+    OWNER to postgres;
 
 CREATE TABLE public.user_role
 (
@@ -48,3 +48,5 @@ CREATE TABLE public.user_role
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 );
+ALTER TABLE public.user_role
+    OWNER to postgres;

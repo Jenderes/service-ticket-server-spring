@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @CrossOrigin("*")
@@ -63,7 +64,10 @@ public class TroubleTicketController {
     @GetMapping
     public ResponseEntity<?> getSpecificTroubleTicket(@RequestParam Map<String, String> params){
         try {
-            return ResponseEntity.ok(ticketService.searchTicket(params));
+            return ResponseEntity.ok(ticketService.searchTicket(params)
+                    .stream()
+                    .map(TroubleTicket::convertToDto)
+                    .collect(Collectors.toList()));
         } catch (SearchFieldNameNotFoundException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());

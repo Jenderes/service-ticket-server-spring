@@ -1,6 +1,7 @@
 package com.example.service_ticket.service.impl.ticket;
 
 import com.example.service_ticket.entity.TicketEntity;
+import com.example.service_ticket.entity.TicketInformationEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.example.service_ticket.exception.TicketNotFoundException;
@@ -44,7 +45,7 @@ public class TicketServiceImpl implements TicketService {
         if (oldTicket == null)
             throw new TicketNotFoundException(ticketId);
         UserEntity userEntity = userService.getCurrentUser();
-        ticketEntity.setCategory(oldTicket.getCategory());
+        ticketEntity.getTicketInformation().setCategory(oldTicket.getTicketInformation().getCategory());
         ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
         ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
@@ -58,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
         UserEntity userEntity = userService.getCurrentUser();
         ticketEntity.setCreateById(userEntity.getUserId());
         ticketEntity.setUpdateById(userEntity.getUserId());
-        ticketEntity.setUserFullName(userEntity.getLastName() + " " + userEntity.getFirstName());
+        ticketEntity.getTicketInformation().setUserFullName(userEntity.getLastName() + " " + userEntity.getFirstName());
         ticketEntity = ticketAutoFillService.fillOnCreate(ticketEntity);
         TicketEntity currentTicket = ticketRepository.save(ticketEntity);
         kafkaTicketService.sendOnCreate(currentTicket);
@@ -101,27 +102,40 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private static Condition getConditionByParameters(Map<String, String> conditions) throws SearchFieldNameNotFoundException {
-        Map<Field<?>, String> mapCondition = new HashMap<>();
-        Map<String, Field<?>> fieldNames = initialTableName();
+        Condition condition = DSL.trueCondition();
+        Map<String, String> fieldNames = tableName();
+        Map<String, String> fieldJsonNames = tableJsonName();
         for (String keyCondition: conditions.keySet()){
-            if (!fieldNames.containsKey(keyCondition))
+            if (fieldNames.containsKey(keyCondition)) {
+                if (conditions.get(keyCondition).equals("")) {
+                    condition = condition.and(fieldNames.get(keyCondition) + " is NULL");
+                } else {
+                    condition = condition.and(fieldNames.get(keyCondition) + " = " + conditions.get(keyCondition));
+                }
+            } else if (fieldJsonNames.containsKey(keyCondition)) {
+                condition = condition.and("ticket_information @> '{\"" + fieldJsonNames.get(keyCondition) + "\": \"" + conditions.get(keyCondition) + "\"}'");
+            } else {
                 throw new SearchFieldNameNotFoundException(keyCondition);
-            mapCondition.put(fieldNames.get(keyCondition), conditions.get(keyCondition));
+            }
         }
-        return DSL.condition(mapCondition);
+        return condition;
     }
 
-    private static Map<String, Field<?>> initialTableName(){
-        Map<String, Field<?>> tableNames = new HashMap<>();
+    private static Map<String, String> tableName(){
+        Map<String, String> tableMap = new HashMap<>();
         Field<?>[] fields  = PUBLIC.TICKET.fields();
         java.lang.reflect.Field[] fieldClass = TicketEntity.class.getDeclaredFields();
-        String[] fieldParams = new String[fieldClass.length];
-        for (int i= 0; i < fieldClass.length; i++) {
-            fieldParams[i] = fieldClass[i].getName();
+        for (int i = 0; i < fieldClass.length; i++){
+            tableMap.put(fieldClass[i].getName(), fields[i].getName());
         }
-        for (int i = 0; i < fieldParams.length; i++){
-            tableNames.put(fieldParams[i], fields[i]);
+        return tableMap;
+    }
+    private static Map<String, String> tableJsonName(){
+        Map<String, String> tableJsonMap = new HashMap<>();
+        java.lang.reflect.Field[] fieldClass = TicketInformationEntity.class.getDeclaredFields();
+        for (java.lang.reflect.Field aClass : fieldClass) {
+            tableJsonMap.put(aClass.getName(), aClass.getName());
         }
-        return tableNames;
+        return tableJsonMap;
     }
 }

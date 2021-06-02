@@ -16,17 +16,17 @@ public class TicketAutoFillServiceImpl implements TicketAutoFillService {
 
     @Override
     public TicketEntity fillOnCreate(TicketEntity toCreateTicket) {
-        toCreateTicket.setCreateDate(LocalDate.now());
-        toCreateTicket.setUpdateDate(LocalDate.now());
-        dictionaryService.getCategoryByName(toCreateTicket.getCategory())
+        toCreateTicket.getTicketInformation().setCreateDate(LocalDate.now());
+        toCreateTicket.getTicketInformation().setUpdateDate(LocalDate.now());
+        dictionaryService.getCategoryByName(toCreateTicket.getTicketInformation().getCategory())
                 .ifPresent((categoryDictionaryEntity1) ->
-                        toCreateTicket.setStatus(categoryDictionaryEntity1.getInitialStatus()));
+                        toCreateTicket.getTicketInformation().setStatus(categoryDictionaryEntity1.getInitialStatus()));
         return toCreateTicket;
     }
 
     @Override
     public TicketEntity fillOnUpdate(TicketEntity toUpdateTicket) {
-        toUpdateTicket.setUpdateDate(LocalDate.now());
+        toUpdateTicket.getTicketInformation().setUpdateDate(LocalDate.now());
         return toUpdateTicket;
     }
 }

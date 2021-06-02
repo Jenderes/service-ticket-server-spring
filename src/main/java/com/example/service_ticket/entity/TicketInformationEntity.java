@@ -7,17 +7,22 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class TicketEntity {
-    private Long ticketId;
-    private Long createById;
-    private Long userAssigneeId;
-    private Long updateById;
-    private TicketInformationEntity ticketInformation;
+public class TicketInformationEntity {
+    String name;
+    String description;
+    String category;
+    String status;
+    String userFullName;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    LocalDate createDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    LocalDate updateDate;
 }

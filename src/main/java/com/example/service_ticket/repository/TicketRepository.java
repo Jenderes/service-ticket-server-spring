@@ -51,16 +51,10 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public TicketEntity update(TicketEntity entity) {
         return dslContext.update(Tables.TICKET)
-                .set(Tables.TICKET.NAME, entity.getName())
-                .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
                 .set(Tables.TICKET.USER_ASSIGNEE_ID, entity.getUserAssigneeId())
                 .set(Tables.TICKET.UPDATE_BY_ID, entity.getUpdateById())
-                .set(Tables.TICKET.STATUS, entity.getStatus())
-                .set(Tables.TICKET.CATEGORY, entity.getCategory())
-                .set(Tables.TICKET.UPDATE_DATE, entity.getUpdateDate())
-                .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
-                .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
+                .set(Tables.TICKET.TICKET_INFORMATION, entity.getTicketInformation())
                 .where(Tables.TICKET.TICKET_ID.eq(entity.getTicketId()))
                 .returning().fetchOne().into(TicketEntity.class);
     }
@@ -68,16 +62,10 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public TicketEntity save(TicketEntity entity) {
         return dslContext.insertInto(Tables.TICKET)
-                .set(Tables.TICKET.NAME, entity.getName())
-                .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
                 .set(Tables.TICKET.USER_ASSIGNEE_ID, entity.getUserAssigneeId())
                 .set(Tables.TICKET.UPDATE_BY_ID, entity.getUpdateById())
-                .set(Tables.TICKET.STATUS, entity.getStatus())
-                .set(Tables.TICKET.CATEGORY, entity.getCategory())
-                .set(Tables.TICKET.UPDATE_DATE, entity.getUpdateDate())
-                .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
-                .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
+                .set(Tables.TICKET.TICKET_INFORMATION, entity.getTicketInformation())
                 .returning().fetchOne().into(TicketEntity.class);
     }
 
@@ -91,13 +79,6 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByUserId(long useId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.CREATE_BY_ID.eq(useId))
-                .fetch()
-                .into(TicketEntity.class);
-    }
-
-    public List<TicketEntity> findTicketByCategory(String category){
-        return dslContext.selectFrom(Tables.TICKET)
-                .where(Tables.TICKET.CATEGORY.eq(category))
                 .fetch()
                 .into(TicketEntity.class);
     }
