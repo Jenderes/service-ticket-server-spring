@@ -25,13 +25,15 @@ public class TicketValidationServiceImpl implements TicketValidationService {
 
     @Override
     public void validateOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket) {
+        if (toUpdateTicket.getTicketInformation().getCategory() == null)
+            return;
         List<StatusTransitionDictionaryEntity> listStatus = statusTransitionDictionaryService.getStatusTransitionByFromStatsAndCategory(oldTicket.getTicketInformation().getStatus(),
                 oldTicket.getTicketInformation().getCategory());
         try {
             if (listStatus.stream()
                     .noneMatch(statusTransitionDictionaryEntity ->
                             statusTransitionDictionaryEntity.getToStatus().equals(toUpdateTicket.getTicketInformation().getStatus()))){
-                throw new StatusTransitionException();
+                throw new StatusTransitionException("Невозможный переход между статусами");
             }
         } catch (StatusTransitionException exception){
             log.info(exception.getMessage());

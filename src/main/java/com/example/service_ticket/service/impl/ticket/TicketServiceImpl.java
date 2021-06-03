@@ -103,8 +103,9 @@ public class TicketServiceImpl implements TicketService {
 
     private static Condition getConditionByParameters(Map<String, String> conditions) throws SearchFieldNameNotFoundException {
         Condition condition = DSL.trueCondition();
-        Map<String, String> fieldNames = tableName();
-        Map<String, String> fieldJsonNames = tableJsonName();
+        Map<String, String> fieldNames = columnsName();
+        Map<String, String> fieldJsonNames = columnJsonName();
+        String columnJson = "ticket_information";
         for (String keyCondition: conditions.keySet()){
             if (fieldNames.containsKey(keyCondition)) {
                 if (conditions.get(keyCondition).equals("")) {
@@ -113,7 +114,7 @@ public class TicketServiceImpl implements TicketService {
                     condition = condition.and(fieldNames.get(keyCondition) + " = " + conditions.get(keyCondition));
                 }
             } else if (fieldJsonNames.containsKey(keyCondition)) {
-                condition = condition.and("ticket_information @> '{\"" + fieldJsonNames.get(keyCondition) + "\": \"" + conditions.get(keyCondition) + "\"}'");
+                condition = condition.and(columnJson + " @> '{\"" + fieldJsonNames.get(keyCondition) + "\": \"" + conditions.get(keyCondition) + "\"}'");
             } else {
                 throw new SearchFieldNameNotFoundException(keyCondition);
             }
@@ -121,7 +122,7 @@ public class TicketServiceImpl implements TicketService {
         return condition;
     }
 
-    private static Map<String, String> tableName(){
+    private static Map<String, String> columnsName(){
         Map<String, String> tableMap = new HashMap<>();
         Field<?>[] fields  = PUBLIC.TICKET.fields();
         java.lang.reflect.Field[] fieldClass = TicketEntity.class.getDeclaredFields();
@@ -130,7 +131,7 @@ public class TicketServiceImpl implements TicketService {
         }
         return tableMap;
     }
-    private static Map<String, String> tableJsonName(){
+    private static Map<String, String> columnJsonName(){
         Map<String, String> tableJsonMap = new HashMap<>();
         java.lang.reflect.Field[] fieldClass = TicketInformationEntity.class.getDeclaredFields();
         for (java.lang.reflect.Field aClass : fieldClass) {

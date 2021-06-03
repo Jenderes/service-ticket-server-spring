@@ -8,6 +8,7 @@ import com.example.service_ticket.model.auth.UserDto;
 import com.example.service_ticket.security.jwt.JwtProvider;
 import com.example.service_ticket.security.jwt.JwtUser;
 import com.example.service_ticket.service.user.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class AuthenticationController {
     private final JwtProvider jwtProvider;
     private final UserService userService;
 
+    @ApiOperation(value = "авторизация пользователя")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationDto requestDto) {
         try {
@@ -49,6 +51,7 @@ public class AuthenticationController {
         }
     }
 
+    @ApiOperation(value = "регистрация пользователя")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserDto createUserDto) {
         try {
@@ -59,6 +62,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(exp.getMessage());
         }
     }
+    @ApiOperation(value = "получение данных пользователя по id")
     @GetMapping("/user/{id}")
     public ResponseEntity<?> findUser(@PathVariable Long id){
         return userService.getUserById(id).map(ResponseEntity::ok)
