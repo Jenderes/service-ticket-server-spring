@@ -25,7 +25,7 @@ public class TicketValidationServiceImpl implements TicketValidationService {
 
     @Override
     public void validateOnUpdate(TicketEntity toUpdateTicket, TicketEntity oldTicket) {
-        if (toUpdateTicket.getTicketInformation().getCategory() == null)
+        if (toUpdateTicket.getTicketInformation().getStatus() == null)
             return;
         List<StatusTransitionDictionaryEntity> listStatus = statusTransitionDictionaryService.getStatusTransitionByFromStatsAndCategory(oldTicket.getTicketInformation().getStatus(),
                 oldTicket.getTicketInformation().getCategory());

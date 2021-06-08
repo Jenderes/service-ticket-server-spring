@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class TroubleTicketController {
 
     private final TicketService ticketService;
+
     @ApiOperation(value = "Создание тикета",
             notes = "Может выполнить только авторизированный пользователь.")
     @PostMapping
@@ -33,6 +34,7 @@ public class TroubleTicketController {
                 .status(HttpStatus.CREATED)
                 .body(TroubleTicket.convertToDto(ticketService.creatTicket(TroubleTicket.convertToEntity(troubleTicket))));
     }
+
     @ApiOperation(value = "Найти тикет по id",
             notes = "Может выполнить только авторизированный пользователь.")
     @GetMapping("/{id}")
@@ -42,6 +44,7 @@ public class TroubleTicketController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() ->ResponseEntity.notFound().build());
     }
+
     @ApiOperation(value = "Изменить тикет по id",
             notes = "Может выполнить только авторизированный пользователь.")
     @PatchMapping("/{id}")
@@ -49,13 +52,15 @@ public class TroubleTicketController {
                                                     @ApiParam(value = "id тикета", required = true)@PathVariable Long id){
         try {
              troubleTicket.setTicketId(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(TroubleTicket.convertToDto(ticketService.updateTicket(TroubleTicket.convertToEntity(troubleTicket))));
+             TroubleTicket trouble = TroubleTicket.convertToDto(ticketService.updateTicket(TroubleTicket.convertToEntity(troubleTicket)));
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(trouble);
         } catch (TicketNotFoundException e) {
             log.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("не нвйде тикет по id: " + id);
         }
     }
+
     @ApiOperation(value = "Удалить тикет по id",
             notes = "Может выполнить только авторизированный пользователь.")
     @DeleteMapping("/{id}")
@@ -67,9 +72,10 @@ public class TroubleTicketController {
                     .body("Удален тикет с id: " + id);
         } catch (TicketNotFoundException e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("не нвйде тикет по id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "category", value = "категория тикета", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "status", value = "статус тикета", required = false, dataType = "string", paramType = "query"),

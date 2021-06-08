@@ -7,6 +7,7 @@ import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.OrderField;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -20,6 +21,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public List<TicketEntity> findAll() {
         return dslContext.selectFrom(Tables.TICKET)
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
     }
@@ -28,6 +30,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public TicketEntity findById(Long id) {
         TicketRecord ticketRecord = dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.TICKET_ID.eq(id))
+                .orderBy(getDefaultOrderBy())
                 .fetchOne();
         if (ticketRecord == null)
             return null;
@@ -79,6 +82,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByUserId(long useId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.CREATE_BY_ID.eq(useId))
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
     }
@@ -86,7 +90,11 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByCondition(Condition condition){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(condition)
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
+    }
+    private OrderField<?> getDefaultOrderBy(){
+        return Tables.TICKET.TICKET_ID.asc();
     }
 }

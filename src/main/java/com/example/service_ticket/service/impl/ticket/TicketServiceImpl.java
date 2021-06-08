@@ -6,12 +6,12 @@ import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.SearchFieldNameNotFoundException;
 import com.example.service_ticket.exception.TicketNotFoundException;
 import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import com.example.service_ticket.service.kafka.KafkaTicketService;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
 import com.example.service_ticket.service.ticket.TicketService;
 import com.example.service_ticket.service.ticket.TicketValidationService;
 import com.example.service_ticket.service.user.UserService;
+import com.example.service_ticket.utils.PatchUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Condition;
@@ -31,7 +31,6 @@ import static com.sample.model.Public.PUBLIC;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 
-    private final UpdateAutoFillService updateAutoFillService;
     private final TicketRepository ticketRepository;
     private final TicketValidationService ticketValidationService;
     private final TicketAutoFillService ticketAutoFillService;
@@ -48,7 +47,8 @@ public class TicketServiceImpl implements TicketService {
         ticketEntity.getTicketInformation().setCategory(oldTicket.getTicketInformation().getCategory());
         ticketValidationService.validateOnUpdate(ticketEntity, oldTicket);
         ticketEntity.setUpdateById(userEntity.getUserId());
-        ticketEntity = updateAutoFillService.fillOnUpdate(ticketEntity, oldTicket);
+        ticketEntity = ticketAutoFillService.fillOnUpdate(ticketEntity);
+        ticketEntity = PatchUtils.mergeToUpdate(ticketEntity, oldTicket);
         TicketEntity currentTicket = ticketRepository.update(ticketEntity);
         kafkaTicketService.sendOnUpdate(oldTicket, currentTicket);
         return currentTicket;
@@ -105,16 +105,15 @@ public class TicketServiceImpl implements TicketService {
         Condition condition = DSL.trueCondition();
         Map<String, String> fieldNames = columnsName();
         Map<String, String> fieldJsonNames = columnJsonName();
-        String columnJson = "ticket_information";
         for (String keyCondition: conditions.keySet()){
             if (fieldNames.containsKey(keyCondition)) {
                 if (conditions.get(keyCondition).equals("")) {
-                    condition = condition.and(fieldNames.get(keyCondition) + " is NULL");
+                    condition = condition.and(ColumnStringNullCondition(fieldNames.get(keyCondition)));
                 } else {
-                    condition = condition.and(fieldNames.get(keyCondition) + " = " + conditions.get(keyCondition));
+                    condition = condition.and(ColumnStringEqualsCondition(fieldNames.get(keyCondition),conditions.get(keyCondition)));
                 }
             } else if (fieldJsonNames.containsKey(keyCondition)) {
-                condition = condition.and(columnJson + " @> '{\"" + fieldJsonNames.get(keyCondition) + "\": \"" + conditions.get(keyCondition) + "\"}'");
+                condition = condition.and(JsonStringCondition(fieldJsonNames.get(keyCondition), conditions.get(keyCondition)));
             } else {
                 throw new SearchFieldNameNotFoundException(keyCondition);
             }
@@ -138,5 +137,17 @@ public class TicketServiceImpl implements TicketService {
             tableJsonMap.put(aClass.getName(), aClass.getName());
         }
         return tableJsonMap;
+    }
+
+    private static String JsonStringCondition(String columnJsonName, String value) {
+        return String.format("ticket_information @> '{\"%s\": \"%s\"}'", columnJsonName, value);
+    }
+
+    private static String ColumnStringEqualsCondition(String columnName, String value) {
+        return String.format("%s = %s", columnName, value);
+    }
+
+    private static String ColumnStringNullCondition(String columnName) {
+        return String.format("%s is NULL",columnName);
     }
 }
