@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String AUTH_ENDPOINT = APIConstant.API + APIConstant.AUTH + APIConstant.ANY;
     private static final String TROUBLE_TICKET_ENDPOINT = APIConstant.API + APIConstant.TICKET;
-    private static final String DICTIONARY_ENDPOINT = APIConstant.API + APIConstant.DICTIONARY + APIConstant.ANY;
+    private static final String DICTIONARY_ENDPOINT = APIConstant.API + APIConstant.DICTIONARY + APIConstant.ANY_ANY;
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
             "/v2/api-docs",

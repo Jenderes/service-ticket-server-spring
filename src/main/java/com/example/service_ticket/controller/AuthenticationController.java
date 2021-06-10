@@ -56,7 +56,7 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@RequestBody UserDto createUserDto) {
         try {
             userService.creatUser(UserDto.convertToEntity(createUserDto));
-            return ResponseEntity.ok("Пользователь зарегистрирован");
+            return ResponseEntity.status(HttpStatus.OK).body(createUserDto);
         } catch (UsernameAlreadyInUserException | EmailAlreadyInUseException exp) {
             log.info(exp.getMessage());
             return ResponseEntity.badRequest().body(exp.getMessage());
