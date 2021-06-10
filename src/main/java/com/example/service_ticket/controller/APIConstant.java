@@ -10,4 +10,5 @@ public final class APIConstant {
     public static final String STATUS_TRANSITION = "/statusTransition";
     public static final String FROM_STATUS = "/fromStatus";
     public static final String ANY = "/*";
+    public static final String ANY_ANY = "/**";
 }
