@@ -7,6 +7,7 @@ import com.sample.model.tables.records.TicketRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.OrderField;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -20,6 +21,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public List<TicketEntity> findAll() {
         return dslContext.selectFrom(Tables.TICKET)
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
     }
@@ -28,6 +30,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public TicketEntity findById(Long id) {
         TicketRecord ticketRecord = dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.TICKET_ID.eq(id))
+                .orderBy(getDefaultOrderBy())
                 .fetchOne();
         if (ticketRecord == null)
             return null;
@@ -51,16 +54,10 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public TicketEntity update(TicketEntity entity) {
         return dslContext.update(Tables.TICKET)
-                .set(Tables.TICKET.NAME, entity.getName())
-                .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
                 .set(Tables.TICKET.USER_ASSIGNEE_ID, entity.getUserAssigneeId())
                 .set(Tables.TICKET.UPDATE_BY_ID, entity.getUpdateById())
-                .set(Tables.TICKET.STATUS, entity.getStatus())
-                .set(Tables.TICKET.CATEGORY, entity.getCategory())
-                .set(Tables.TICKET.UPDATE_DATE, entity.getUpdateDate())
-                .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
-                .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
+                .set(Tables.TICKET.TICKET_INFORMATION, entity.getTicketInformation())
                 .where(Tables.TICKET.TICKET_ID.eq(entity.getTicketId()))
                 .returning().fetchOne().into(TicketEntity.class);
     }
@@ -68,16 +65,10 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     @Override
     public TicketEntity save(TicketEntity entity) {
         return dslContext.insertInto(Tables.TICKET)
-                .set(Tables.TICKET.NAME, entity.getName())
-                .set(Tables.TICKET.DESCRIPTION, entity.getDescription())
                 .set(Tables.TICKET.CREATE_BY_ID, entity.getCreateById())
                 .set(Tables.TICKET.USER_ASSIGNEE_ID, entity.getUserAssigneeId())
                 .set(Tables.TICKET.UPDATE_BY_ID, entity.getUpdateById())
-                .set(Tables.TICKET.STATUS, entity.getStatus())
-                .set(Tables.TICKET.CATEGORY, entity.getCategory())
-                .set(Tables.TICKET.UPDATE_DATE, entity.getUpdateDate())
-                .set(Tables.TICKET.CREATE_DATE, entity.getCreateDate())
-                .set(Tables.TICKET.USER_FULL_NAME, entity.getUserFullName())
+                .set(Tables.TICKET.TICKET_INFORMATION, entity.getTicketInformation())
                 .returning().fetchOne().into(TicketEntity.class);
     }
 
@@ -91,13 +82,7 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByUserId(long useId){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(Tables.TICKET.CREATE_BY_ID.eq(useId))
-                .fetch()
-                .into(TicketEntity.class);
-    }
-
-    public List<TicketEntity> findTicketByCategory(String category){
-        return dslContext.selectFrom(Tables.TICKET)
-                .where(Tables.TICKET.CATEGORY.eq(category))
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
     }
@@ -105,7 +90,11 @@ public class TicketRepository implements BaseRepository<TicketEntity, Long> {
     public List<TicketEntity> findTicketByCondition(Condition condition){
         return dslContext.selectFrom(Tables.TICKET)
                 .where(condition)
+                .orderBy(getDefaultOrderBy())
                 .fetch()
                 .into(TicketEntity.class);
+    }
+    private OrderField<?> getDefaultOrderBy(){
+        return Tables.TICKET.TICKET_ID.asc();
     }
 }

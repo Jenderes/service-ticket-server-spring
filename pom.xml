@@ -139,7 +139,7 @@
                             <!--Insert your DB configuration-->
                             <jdbc>
                                 <driver>org.postgresql.Driver</driver>
-                                <url>jdbc:postgresql://localhost:5432/manager_ticket</url>
+                                <url>jdbc:postgresql://localhost:6342/manager_ticket</url>
                                 <user>postgres</user>
                                 <password>postgres</password>
                             </jdbc>
@@ -151,6 +151,14 @@
                                     <includes>.*</includes>
                                     <excludes></excludes>
                                     <inputSchema>public</inputSchema>
+                                    <forcedTypes>
+                                        <forcedType>
+                                            <userType>com.example.service_ticket.entity.TicketInformationEntity</userType>
+                                            <binding>com.example.service_ticket.entity.binding.PostgresJsonbTicketBinding</binding>
+                                            <includeExpression>ticket_information</includeExpression>
+                                            <includeTypes>.*</includeTypes>
+                                        </forcedType>
+                                    </forcedTypes>
                                 </database>
                                 <generate>
                                     <pojos>true</pojos>

@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     private static final String AUTH_ENDPOINT = APIConstant.API + APIConstant.AUTH + APIConstant.ANY;
-    private static final String TROUBLE_TICKET_ENDPOINT = APIConstant.API + APIConstant.TICKET + APIConstant.ANY;
+    private static final String TROUBLE_TICKET_ENDPOINT = APIConstant.API + APIConstant.TICKET;
     private static final String DICTIONARY_ENDPOINT = APIConstant.API + APIConstant.DICTIONARY + APIConstant.ANY;
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
@@ -56,10 +56,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_ENDPOINT).permitAll()
-                .antMatchers(TROUBLE_TICKET_ENDPOINT).permitAll()
+                .antMatchers(TROUBLE_TICKET_ENDPOINT).hasRole("USER")
+                .antMatchers(TROUBLE_TICKET_ENDPOINT + APIConstant.ANY).hasRole("USER")
                 .antMatchers(DICTIONARY_ENDPOINT).permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
 
         httpSecurity.apply(new JwtConfigurer(jwtProvider));
     }

@@ -6,8 +6,8 @@ import com.example.service_ticket.exception.EmailAlreadyInUseException;
 import com.example.service_ticket.exception.UsernameAlreadyInUserException;
 import com.example.service_ticket.repository.RoleRepository;
 import com.example.service_ticket.repository.UserRepository;
-import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import com.example.service_ticket.service.user.UserService;
+import com.example.service_ticket.utils.PatchUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,12 +24,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final UpdateAutoFillService updateAutoFillService;
 
     @Override
     public void updateUser(UserEntity userEntity) {
         UserEntity oldUser = userRepository.findById(userEntity.getUserId());
-        userEntity = updateAutoFillService.fillOnUpdate(userEntity, oldUser);
+        userEntity = PatchUtils.mergeToUpdate(userEntity, oldUser);
         userRepository.update(userEntity);
     }
 

@@ -4,11 +4,11 @@ import com.example.service_ticket.entity.TicketEntity;
 import com.example.service_ticket.entity.UserEntity;
 import com.example.service_ticket.exception.TicketNotFoundException;
 import com.example.service_ticket.repository.TicketRepository;
-import com.example.service_ticket.service.autofill.UpdateAutoFillService;
 import com.example.service_ticket.service.impl.ticket.TicketServiceImpl;
 import com.example.service_ticket.service.ticket.TicketAutoFillService;
 import com.example.service_ticket.service.ticket.TicketValidationService;
 import com.example.service_ticket.service.user.UserService;
+import com.example.service_ticket.utils.PatchUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -29,8 +29,6 @@ public class TicketServiceMock {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static List<TicketEntity> ticketList;
     private static UserEntity testUser;
-    @Mock
-    UpdateAutoFillService updateAutoFillService;
     @Spy
     TicketValidationService ticketValidationService;
     @Mock
@@ -78,7 +76,7 @@ public class TicketServiceMock {
         Mockito.when(ticketRepository.update(Mockito.any(TicketEntity.class))).thenAnswer((a) -> a.getArgument(0));
         Mockito.when(userService.getCurrentUser()).thenReturn(testUser);
         Mockito.when(ticketRepository.findById(Mockito.anyLong())).thenReturn(ticketList.get(0));
-        Mockito.when(updateAutoFillService.fillOnUpdate(Mockito.any(TicketEntity.class),Mockito.any(TicketEntity.class))).thenReturn(ticketList.get(0));
+        Mockito.when(PatchUtils.mergeToUpdate(Mockito.any(TicketEntity.class),Mockito.any(TicketEntity.class))).thenReturn(ticketList.get(0));
         Assertions.assertEquals(ticketList.get(0),ticketServiceMock.updateTicket(ticketList.get(0)));
     }
 }
