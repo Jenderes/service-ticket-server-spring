@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TroubleTicket {
     Long ticketId;
-    Long createBytId;
+    Long createById;
     Long userAssigneeId;
     Long updateById;
     String name;
@@ -26,7 +26,7 @@ public class TroubleTicket {
     public static TicketEntity convertToEntity(TroubleTicket troubleTicket){
         return new TicketEntity(
                 troubleTicket.ticketId,
-                troubleTicket.createBytId,
+                troubleTicket.createById,
                 troubleTicket.userAssigneeId,
                 troubleTicket.updateById,
                 new TicketInformationEntity(

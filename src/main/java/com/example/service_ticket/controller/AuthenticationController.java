@@ -47,7 +47,7 @@ public class AuthenticationController {
             return ResponseEntity.ok(AuthUserDto.convertDto(user, roles, token));
         } catch (AuthenticationServiceException exp) {
             log.info(exp.getMessage());
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Не правильный логин или пароль");
         }
     }
 

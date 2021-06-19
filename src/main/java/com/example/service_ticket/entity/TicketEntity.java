@@ -14,6 +14,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class TicketEntity {
     private Long ticketId;
     private Long createById;
