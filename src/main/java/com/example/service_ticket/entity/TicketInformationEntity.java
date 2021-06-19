@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class TicketInformationEntity {
     String name;
     String description;
